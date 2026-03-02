@@ -1,0 +1,2425 @@
+﻿Project Context From: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo
+Generated On: 02/17/2026 11:55:54
+===============================================
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\.gitignore
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\index.html
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="MOMBO - Junior ML Engineer spÃ©cialisÃ© en systÃ¨mes distribuÃ©s et IA agentique" />
+    <title>MOMBO - ML Engineer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\package.json
+
+{
+  "name": "portfolio-mombo",
+  "homepage": "https://MOMBO-DINGBA.github.io/portfolio_mombo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "framer-motion": "^11.0.0",
+    "lucide-react": "^0.344.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "gh-pages": "^6.1.1",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.0"
+  }
+}
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\postcss.config.js
+
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\project_context.ps1
+
+param (
+    [string]$ProjectPath = "."
+)
+
+$ProjectPath = Resolve-Path $ProjectPath
+$OutputFile = Join-Path $ProjectPath "project_context.txt"
+
+$ExcludeDirs = @(
+    "node_modules", "vendor", "build", "dist", "target",
+    "__pycache__", ".next", "cache", "venv", "storage"
+)
+
+$ExcludeFiles = @(
+    "*.log", "*.jar", "*.pdf", "*.png", "*.jpg",
+    "*.class", "*.sqlite", "*.csv",
+    "project_context.txt",
+    "package-lock.json", "yarn.lock",
+    "composer.lock", "pnpm-lock.yaml", "*.ico"
+)
+
+# Supprimer ancien fichier
+if (Test-Path $OutputFile) {
+    Remove-Item $OutputFile -Force
+}
+
+# Header
+@"
+Project Context From: $ProjectPath
+Generated On: $(Get-Date)
+===============================================
+"@ | Out-File $OutputFile -Encoding utf8
+
+# RÃ©cupÃ©ration des fichiers
+Get-ChildItem -Path $ProjectPath -Recurse -File |
+Where-Object {
+    $dirOk = $true
+    foreach ($dir in $ExcludeDirs) {
+        if ($_.FullName -match "\\$dir\\") { $dirOk = $false }
+    }
+
+    $fileOk = $true
+    foreach ($pattern in $ExcludeFiles) {
+        if ($_.Name -like $pattern) { $fileOk = $false }
+    }
+
+    $dirOk -and $fileOk
+} |
+Sort-Object FullName |
+ForEach-Object {
+
+    Add-Content $OutputFile "//---> PATH: $($_.FullName)`n"
+
+    try {
+        $content = Get-Content $_.FullName -Raw -ErrorAction Stop
+        Add-Content $OutputFile $content
+    }
+    catch {
+        Add-Content $OutputFile "[Binary or unreadable file]"
+    }
+
+    Add-Content $OutputFile "`n// END OF FILE`n"
+}
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\public\images\README.md
+
+# Guide d'Ajout des Images Personnelles
+
+## Instructions
+
+Pour personnaliser votre portfolio avec vos propres images, placez les fichiers suivants dans le dossier `public/images/` :
+
+### 1. Photo de Profil
+**Fichier :** `profile.jpg` ou `profile.png`
+- **Dimensions recommandÃ©es :** 400x400 pixels (carrÃ©)
+- **Format :** JPG ou PNG
+- **Utilisation :** Photo de profil dans le Hero et la section Ã€ Propos
+
+### 2. Logos des Ã‰coles
+
+#### ENSPY
+**Fichier :** `enspy-logo.png`
+- **Dimensions recommandÃ©es :** 200x200 pixels
+- **Format :** PNG avec fond transparent (prÃ©fÃ©rable)
+- **Utilisation :** Timeline - Master of Engineering
+
+#### UniversitÃ© de NgaoundÃ©rÃ©
+**Fichier :** `universite-ngaoundere-logo.png`
+- **Dimensions recommandÃ©es :** 200x200 pixels
+- **Format :** PNG avec fond transparent (prÃ©fÃ©rable)
+- **Utilisation :** Timeline - Bac+2 MathÃ©matiques Pures
+
+#### Coursera (Optionnel)
+**Fichier :** `coursera-logo.png`
+- **Dimensions recommandÃ©es :** 200x200 pixels
+- **Format :** PNG avec fond transparent (prÃ©fÃ©rable)
+- **Utilisation :** Timeline - Certification Machine Learning
+
+## Comment Ajouter les Images
+
+1. TÃ©lÃ©chargez ou prÃ©parez vos images
+2. Renommez-les selon les noms ci-dessus
+3. Placez-les dans le dossier `public/images/`
+4. Le portfolio les chargera automatiquement
+
+## Images Temporaires
+
+En attendant vos vraies images, le portfolio utilise des images de placeholder depuis Unsplash. Une fois que vous ajouterez vos images dans `public/images/`, elles remplaceront automatiquement les placeholders.
+
+## Conseils
+
+- Utilisez des images de haute qualitÃ©
+- Pour les logos, prÃ©fÃ©rez le format PNG avec fond transparent
+- Optimisez vos images pour le web (compression sans perte de qualitÃ©)
+- La photo de profil doit Ãªtre professionnelle et bien cadrÃ©e
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\README.md
+
+# Portfolio MOMBO - Junior ML Engineer
+
+Portfolio minimaliste inspirÃ© du design "Stanley Wong" - Fond noir pur, typographie Ã©purÃ©e, focus sur l'expertise technique.
+
+## ðŸš€ DÃ©marrage Rapide
+
+### PrÃ©requis
+- Node.js (v18 ou supÃ©rieur)
+- npm ou yarn
+
+### Installation
+
+```bash
+# Installer les dÃ©pendances
+npm install
+
+# Lancer le serveur de dÃ©veloppement
+npm run dev
+
+# Builder pour la production
+npm run build
+
+# PrÃ©visualiser le build de production
+npm run preview
+```
+
+## ðŸ“¦ Technologies UtilisÃ©es
+
+- **React 18** - Framework UI
+- **Vite** - Build tool ultra-rapide
+- **Tailwind CSS** - Styling utilitaire
+- **Framer Motion** - Animations fluides
+- **Lucide React** - IcÃ´nes minimalistes
+
+## ðŸŽ¨ Design System
+
+### Palette de Couleurs
+- **Fond**: `#000000` (Noir pur)
+- **Texte principal**: `#FFFFFF` (Blanc pur)
+- **Texte secondaire**: `#A1A1AA` (Zinc-400)
+- **Bordures**: `#1F1F23` (Gris trÃ¨s foncÃ©)
+
+### Typographie
+- **Sans-serif**: Inter (Google Fonts)
+- **Monospace**: JetBrains Mono (Google Fonts)
+
+## ðŸ“ Structure du Projet
+
+```
+portfolio-mombo/
+â”œâ”€â”€ src/
+â”‚   â”œâ”€â”€ App.jsx          # Composant principal avec toutes les sections
+â”‚   â”œâ”€â”€ main.jsx         # Point d'entrÃ©e React
+â”‚   â””â”€â”€ index.css        # Styles globaux + Tailwind
+â”œâ”€â”€ index.html           # Template HTML
+â”œâ”€â”€ package.json         # DÃ©pendances
+â”œâ”€â”€ vite.config.js       # Configuration Vite
+â”œâ”€â”€ tailwind.config.js   # Configuration Tailwind
+â””â”€â”€ postcss.config.js    # Configuration PostCSS
+```
+
+## ðŸŒ DÃ©ploiement sur GitHub Pages
+
+### Configuration
+
+1. **CrÃ©er un repository GitHub** nommÃ© `portfolio-mombo`
+
+2. **Initialiser Git et pousser le code**:
+```bash
+git init
+git add .
+git commit -m "Initial commit: Portfolio minimaliste"
+git branch -M main
+git remote add origin https://github.com/MOMBO-DINGBA/portfolio-mombo.git
+git push -u origin main
+```
+
+3. **Installer gh-pages** (dÃ©jÃ  inclus dans package.json):
+```bash
+npm install
+```
+
+4. **DÃ©ployer**:
+```bash
+npm run deploy
+```
+
+5. **Activer GitHub Pages**:
+   - Aller dans Settings > Pages
+   - Source: Deploy from a branch
+   - Branch: `gh-pages` / `root`
+   - Sauvegarder
+
+Votre portfolio sera accessible Ã : `https://mombo-dingba.github.io/portfolio-mombo/`
+
+### Mises Ã  jour
+
+Pour mettre Ã  jour le portfolio:
+```bash
+npm run deploy
+```
+
+## âœ¨ FonctionnalitÃ©s
+
+- âœ… Design ultra-minimaliste noir/blanc
+- âœ… Animations au scroll avec Framer Motion
+- âœ… Section "Deep Dive" sur le projet Agentic ERP
+- âœ… Diagramme ASCII du flux systÃ¨me
+- âœ… Stack technique organisÃ©e par catÃ©gories
+- âœ… Responsive design (mobile-first)
+- âœ… Performance optimisÃ©e
+- âœ… SEO-friendly
+
+## ðŸ”§ Personnalisation
+
+### Modifier les informations personnelles
+
+Ã‰diter `src/App.jsx` et modifier:
+- Nom, titre dans la section `Hero`
+- Projets dans `ProjectDeepDive` et `OtherProjects`
+- Stack technique dans `TechnicalStack`
+- Formation/ExpÃ©rience dans `ExperienceEducation`
+- Liens sociaux dans `Footer`
+
+### Modifier les couleurs
+
+Ã‰diter `tailwind.config.js` dans la section `theme.extend.colors`
+
+### Ajouter des sections
+
+CrÃ©er de nouveaux composants dans `App.jsx` et les ajouter dans le composant principal
+
+## ðŸ“ Notes Techniques
+
+- **Latence de dÃ©cision**: OptimisÃ©e pour < 300ms
+- **Validation rate**: 99.2% avec Safety Guardrails
+- **Architecture**: Event-driven avec Kafka + Redis
+- **ScalabilitÃ©**: Horizontal scaling via Kubernetes
+
+## ðŸ“§ Contact
+
+- **Email**: emmamombo79@gmail.com
+- **LinkedIn**: [Emmanuel MOMBO DINGBA](https://www.linkedin.com/in/emmanuel-mombo-dingba-56285b234)
+- **GitHub**: [@MOMBO-DINGBA](https://github.com/MOMBO-DINGBA)
+
+---
+
+**Â© 2026 MOMBO. ConÃ§u avec prÃ©cision et minimalisme.**
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\App.jsx
+
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Github, Linkedin, Mail, X, ChevronDown, Code2, Brain, Server, Cpu, Globe, Moon, Sun, Languages } from 'lucide-react';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
+
+// Images
+import logoEnspy from './assets/images/logo_enspy.jpg';
+import logoStanford from './assets/images/stanford_logo.png';
+import logoNgaoundere from './assets/images/Univ_Ndere_logo.jpg';
+import NeuralNetwork from './components/NeuralNetwork';
+import ProjectCard3D from './components/ProjectCard3D';
+import ScrollTimeline from './components/ScrollTimeline';
+import TechOrbit from './components/TechOrbit';
+
+// Lazy load heavy background components
+const MatrixRain = React.lazy(() => import('./components/MatrixRain'));
+const CyberField = React.lazy(() => import('./components/CyberField'));
+
+
+// Components
+const TypewriterEffect = ({ words, className }) => {
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [currentText, setCurrentText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        const word = words[currentWordIndex];
+        const typeSpeed = isDeleting ? 50 : 100;
+
+        const timer = setTimeout(() => {
+            if (!isDeleting) {
+                setCurrentText(word.substring(0, currentText.length + 1));
+                if (currentText.length === word.length) {
+                    setTimeout(() => setIsDeleting(true), 2000); cd
+                }
+            } else {
+                setCurrentText(word.substring(0, currentText.length - 1));
+                if (currentText.length === 0) {
+                    setIsDeleting(false);
+                    setCurrentWordIndex((prev) => (prev + 1) % words.length);
+                }
+            }
+        }, typeSpeed);
+
+        return () => clearTimeout(timer);
+    }, [currentText, isDeleting, currentWordIndex, words]);
+
+    return (
+        <span className={className}>
+            {currentText}
+            <motion.span
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="inline-block w-1 h-[1em] bg-blue-500 ml-1 align-middle"
+            />
+        </span>
+    );
+};
+
+// Navigation
+const Navigation = () => {
+    const { theme, toggleTheme } = useTheme();
+    const { language, toggleLanguage, t } = useLanguage();
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToSection = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    return (
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 dark:bg-pure-black/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10' : 'bg-transparent border-transparent'}`}>
+            <div className="max-w-7xl mx-auto px-6 py-4">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Mombo-Dingba Emmanuel
+                    </h1>
+
+                    <div className="flex items-center gap-6">
+                        <div className="hidden md:flex gap-6">
+                            {['about', 'projects', 'skills', 'timeline', 'contact'].map((item) => (
+                                <button
+                                    key={item}
+                                    onClick={() => scrollToSection(item)}
+                                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors font-medium text-sm uppercase tracking-wide relative group"
+                                >
+                                    {t(`nav.${item}`)}
+                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="flex items-center gap-3 border-l border-gray-300 dark:border-white/20 pl-6">
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                            >
+                                {theme === 'dark' ? (
+                                    <Moon size={20} className="text-blue-400" />
+                                ) : (
+                                    <Sun size={20} className="text-yellow-500" />
+                                )}
+                            </button>
+
+                            <button
+                                onClick={toggleLanguage}
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-all border border-gray-200 dark:border-white/10"
+                            >
+                                <Languages size={16} className="text-gray-700 dark:text-white" />
+                                <span className="text-sm font-semibold text-gray-900 dark:text-white uppercase">{language}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+};
+
+// Hero Section
+const Hero = () => {
+    const { t } = useLanguage();
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+    const y2 = useTransform(scrollY, [0, 500], [0, -150]);
+
+    const scrollToAbout = () => {
+        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const roles = [
+        t('hero.role1'),
+        t('hero.role2'),
+        t('hero.role3')
+    ];
+
+    return (
+        <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden bg-gray-50 dark:bg-pure-black transition-colors duration-300"
+        >
+            {/* Background Component */}
+            <NeuralNetwork />
+
+            <motion.div style={{ y: y1 }} className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-white/80 to-purple-50/80 dark:hidden"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-pure-black/60 via-pure-black/70 to-pure-black hidden dark:block"></div>
+            </motion.div>
+
+            <motion.div style={{ y: y2 }} className="max-w-4xl w-full text-center relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.8 }}
+                    className="mb-8 relative"
+                >
+                    <div className="absolute inset-0 w-40 h-40 mx-auto rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 blur-xl opacity-40 dark:opacity-60 animate-pulse"></div>
+                    <div className="relative w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-white/50 dark:border-white/20 shadow-2xl">
+                        <img
+                            src="/images/profile.jpg"
+                            alt="MOMBO DINGBA Emmanuel"
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                                e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop";
+                            }}
+                        />
+                    </div>
+                </motion.div>
+
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent drop-shadow-sm">
+                    MOMBO DINGBA Emmanuel
+                </h1>
+
+                <div className="h-12 mb-12">
+                    <TypewriterEffect
+                        words={roles}
+                        className="text-2xl md:text-3xl font-light text-gray-700 dark:text-blue-200"
+                    />
+                </div>
+
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={scrollToAbout}
+                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-full overflow-hidden shadow-xl shadow-blue-600/20"
+                >
+                    <span className="relative z-10 flex items-center gap-2">
+                        {t('hero.cta')} <ChevronDown className="animate-bounce" />
+                    </span>
+                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+                </motion.button>
+            </motion.div>
+        </motion.section>
+    );
+};
+
+// Company Logos (Auto-scroll Marquee)
+const CompanyLogos = () => {
+    const companies = [
+        { name: 'ENSPY', logo: 'ðŸŽ“' },
+        { name: 'Python', logo: 'ðŸ' },
+        { name: 'React', logo: 'âš›ï¸' },
+        { name: 'Docker', logo: 'ðŸ³' },
+        { name: 'Kubernetes', logo: 'â˜¸ï¸' },
+        { name: 'TensorFlow', logo: 'ðŸ§ ' },
+        { name: 'FastAPI', logo: 'âš¡' },
+        { name: 'Kafka', logo: 'ðŸ“Š' }
+    ];
+
+    return (
+        <div className="py-12 bg-gray-100 dark:bg-pure-black border-y border-gray-200 dark:border-white/10 overflow-hidden relative transition-colors duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-transparent to-gray-100 dark:from-pure-black dark:to-pure-black z-10 pointer-events-none"></div>
+            <div className="flex animate-marquee whitespace-nowrap gap-16 items-center hover:[animation-play-state:paused]">
+                {[...companies, ...companies, ...companies].map((company, idx) => (
+                    <div key={idx} className="flex flex-col items-center gap-3 group cursor-pointer transition-transform hover:scale-110">
+                        <span className="text-5xl filter grayscale group-hover:grayscale-0 transition-all duration-300 drop-shadow-lg">
+                            {company.logo}
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-white/40 font-mono group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors uppercase tracking-widest font-bold">
+                            {company.name}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+// About Section
+const About = () => {
+    const { t } = useLanguage();
+
+    return (
+        <motion.section
+            id="about"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="min-h-screen flex items-center px-6 py-32 bg-white dark:bg-pure-black transition-colors duration-300 relative"
+        >
+            <div className="absolute right-0 top-20 w-1/3 h-1/3 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div className="max-w-6xl mx-auto relative z-10 ">
+                <motion.h2
+                    initial={{ x: -50, opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    className="text-5xl font-bold mb-16 text-gray-900 dark:text-white border-l-8 border-blue-600 pl-6"
+                >
+                    {t('about.title')}
+                </motion.h2>
+
+                <div className="grid md:grid-cols-[350px,1fr] gap-16 items-center">
+                    <motion.div
+                        initial={{ opacity: 0, rotate: -5 }}
+                        whileInView={{ opacity: 1, rotate: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="w-full relative group"
+                    >
+                        <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 opacity-20"></div>
+                        <div className="relative rounded-2xl overflow-hidden border-4 border-gray-200 dark:border-white/10 shadow-2xl">
+                            <img
+                                src="/images/profile.jpg"
+                                alt="MOMBO DINGBA Emmanuel"
+                                className="w-full h-auto object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
+                                onError={(e) => {
+                                    e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop";
+                                }}
+                            />
+                        </div>
+                    </motion.div>
+
+                    <div className="space-y-8 text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-light">
+                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>{t('about.p1')}</motion.p>
+                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>{t('about.p2')}</motion.p>
+                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="p-6 bg-blue-50 dark:bg-white/5 border-l-4 border-blue-500 rounded-r-xl italic">
+                            "{t('about.p3')}"
+                        </motion.p>
+                    </div>
+                </div>
+            </div>
+        </motion.section>
+    );
+};
+
+// Spotlight Card Component (inline for simplicity or import)
+const SpotlightCard = ({ children, className = "" }) => {
+    const divRef = useRef(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [opacity, setOpacity] = useState(0);
+
+    const handleMouseMove = (e) => {
+        if (!divRef.current) return;
+        const rect = divRef.current.getBoundingClientRect();
+        setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    };
+
+    return (
+        <div
+            ref={divRef}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setOpacity(1)}
+            onMouseLeave={() => setOpacity(0)}
+            className={`relative overflow-hidden ${className}`}
+        >
+            <div
+                className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-10"
+                style={{
+                    opacity,
+                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.15), transparent 40%)`,
+                }}
+            />
+            {children}
+        </div>
+    );
+};
+
+// Project Modal (Case Study style)
+const ProjectModal = ({ project, onClose }) => {
+    const { t } = useLanguage();
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
+            onClick={onClose}
+        >
+            <motion.div
+                initial={{ scale: 0.95, opacity: 0, y: 50 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.95, opacity: 0, y: 50 }}
+                className="bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative flex flex-col transition-colors duration-300"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {/* Header Image */}
+                <div className="relative h-64 md:h-96 shrink-0">
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/20 to-transparent" />
+                    <div className="absolute bottom-8 left-8 right-8">
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {project.technologies.map(tech => (
+                                <span key={tech} className="px-3 py-1 bg-blue-600/20 backdrop-blur-md border border-blue-500/30 text-blue-400 text-xs font-bold rounded-full uppercase tracking-tighter">
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+                        <h3 className="text-4xl md:text-6xl font-black text-white leading-none whitespace-pre-line">
+                            {project.title}
+                        </h3>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className="absolute top-6 right-6 p-3 bg-black/40 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90"
+                    >
+                        <X size={24} />
+                    </button>
+                </div>
+
+                {/* Content Area */}
+                <div className="flex-1 overflow-y-auto p-8 md:p-12">
+                    <div className="grid md:grid-cols-[2fr,1fr] gap-12">
+                        <div className="space-y-10">
+                            <section>
+                                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-blue-600 mb-4">{t('projects.caseStudy.overview') || 'AperÃ§u du Projet'}</h4>
+                                <p className="text-xl md:text-2xl leading-relaxed text-gray-700 dark:text-gray-300 font-light italic">
+                                    {project.fullDesc}
+                                </p>
+                            </section>
+
+                            <section className="grid md:grid-cols-2 gap-8">
+                                <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
+                                    <h5 className="font-bold text-gray-900 dark:text-white mb-2">Challenge</h5>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Conception d'une architecture capable de gÃ©rer des flux de donnÃ©es complexes avec une latence minimale tout en assurant une haute disponibilitÃ©.
+                                    </p>
+                                </div>
+                                <div className="p-6 bg-blue-600/5 rounded-2xl border border-blue-600/20">
+                                    <h5 className="font-bold text-blue-600 dark:text-blue-400 mb-2">Solution</h5>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Mise en Å“uvre de patterns asynchrones et de caching distribuÃ© pour optimiser les performances de bout en bout.
+                                    </p>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div className="space-y-8">
+                            <div>
+                                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-purple-600 mb-4">{t('projects.techDetails') || 'DÃ©tails Techniques'}</h4>
+                                <ul className="space-y-4">
+                                    {project.details && project.details.map((detail, idx) => (
+                                        <li key={idx} className="flex items-start gap-4 text-gray-600 dark:text-gray-400 text-sm">
+                                            <div className="mt-1 w-2 h-2 rounded-full bg-purple-500 shrink-0 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
+                                            <span>{detail}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="pt-8 border-t border-gray-100 dark:border-white/10">
+                                <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-black rounded-xl shadow-lg shadow-blue-600/20 hover:scale-[1.02] transition-transform">
+                                    {t('projects.viewDemo') || 'VOIR LA DÃ‰MO LIVE'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+// Projects Grid
+const Projects = () => {
+    const [selectedProject, setSelectedProject] = useState(null);
+    const { t } = useLanguage();
+
+    // Reconstruct projects array from translation keys
+    const projects = [
+        {
+            title: t('projects.p1.title') === 'projects.p1.title' ? "Distributed AI System" : t('projects.p1.title'),
+            description: t('projects.p1.desc') === 'projects.p1.desc' ? "High scale event processing" : t('projects.p1.desc'),
+            fullDesc: t('projects.p1.fullDesc'),
+            technologies: ['FastAPI', 'Kafka', 'Redis', 'LangGraph', 'Pydantic'],
+            image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop',
+            details: ["Event driven architecture", "Sub-millisecond latency", "Horizontal scaling"]
+        },
+        {
+            title: t('projects.p2.title') === 'projects.p2.title' ? "Real-time Chat" : t('projects.p2.title'),
+            description: t('projects.p2.desc'),
+            fullDesc: t('projects.p2.fullDesc'),
+            technologies: ['WebRTC', 'WebSocket', 'React', 'Node.js'],
+            image: 'https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=400&fit=crop',
+            details: ["P2P Video Streaming", "Socket.io clustering", "Encryption at rest"]
+        }
+    ];
+
+    return (
+        <>
+            <section
+                id="projects"
+                className="px-6 py-32 relative bg-gray-50 dark:bg-pure-black transition-colors duration-300"
+            >
+                <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-purple-500/5 blur-[150px] pointer-events-none"></div>
+
+                <div className="max-w-6xl mx-auto relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mb-16 text-center"
+                    >
+                        <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent inline-block">
+                            {t('projects.title')}
+                        </h2>
+                        <p className="text-xl text-gray-600 dark:text-white/60 max-w-2xl mx-auto">{t('projects.subtitle')}</p>
+                    </motion.div>
+
+                    <div className="grid md:grid-cols-2 gap-10">
+                        {projects.map((project, idx) => (
+                            <div key={idx} className="h-[400px]">
+                                <ProjectCard3D
+                                    project={project}
+                                    t={t}
+                                    onClick={() => setSelectedProject(project)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <AnimatePresence>
+                {selectedProject && (
+                    <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+                )}
+            </AnimatePresence>
+        </>
+    );
+};
+
+// Skills Section
+const Skills = () => {
+    const { t } = useLanguage();
+
+    const allSkills = [
+        'Python', 'FastAPI', 'Node.js', 'React', 'TypeScript', 'JavaScript',
+        'LangGraph', 'LangChain', 'Pydantic', 'OpenAI API', 'Hugging Face',
+        'Docker', 'Kubernetes', 'Kafka', 'Redis', 'PostgreSQL', 'MongoDB',
+        'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy'
+    ];
+
+    return (
+        <section
+            id="skills"
+            className="px-6 py-32 relative overflow-hidden bg-white dark:bg-pure-black transition-colors duration-300"
+        >
+            <div className="max-w-6xl mx-auto relative z-10">
+                <h2 className="text-5xl md:text-6xl font-bold mb-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                    {t('skills.title')}
+                </h2>
+
+                <div className="flex flex-col items-center">
+                    <TechOrbit skills={allSkills} />
+
+                    <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
+                        {['core', 'ai', 'infra', 'ml'].map((cat) => (
+                            <div key={cat} className="text-center p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-widest text-blue-600">
+                                    {t(`skills.categories.${cat}`)}
+                                </h3>
+                                <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// Timeline
+const Timeline = () => {
+    const { t } = useLanguage();
+    // Simplified for updating loop
+    const experiences = [
+        {
+            period: '2021-2026',
+            title: t('timeline.exp1.title'),
+            organization: t('timeline.exp1.org'),
+            location: 'YaoundÃ©, Cameroun',
+            description: t('timeline.exp1.desc'),
+            logo: logoEnspy,
+            logoFallback: 'ðŸŽ“'
+        },
+        {
+            period: '2025',
+            title: t('timeline.exp2.title'),
+            organization: t('timeline.exp2.org'),
+            description: t('timeline.exp2.desc'),
+            logo: logoEnspy, // Assuming the internship was also associated or used generic logic
+            logoFallback: 'ðŸ’¼'
+        },
+        // ... (truncated for brevity, would include all)
+        {
+            period: '2024',
+            title: t('timeline.exp3.title'),
+            organization: t('timeline.exp3.org'),
+            description: t('timeline.exp3.desc'),
+            logo: logoStanford,
+            logoFallback: 'ðŸ“œ'
+        },
+        {
+            period: '2019-2021',
+            title: t('timeline.exp4.title'),
+            organization: t('timeline.exp4.org'),
+            location: 'NgaoundÃ©rÃ©, Cameroun',
+            description: t('timeline.exp4.desc'),
+            logo: logoNgaoundere,
+            logoFallback: 'ðŸŽ“'
+        }
+    ];
+
+    return (
+        <section
+            id="timeline"
+            className="relative bg-gray-50 dark:bg-[#050505] transition-colors duration-300"
+        >
+            <div className="py-20 text-center">
+                <h2 className="text-5xl md:text-6xl font-bold mb-16 text-center text-gray-900 dark:text-white">{t('timeline.title')}</h2>
+            </div>
+
+            <ScrollTimeline experiences={experiences} t={t} />
+        </section>
+    );
+};
+
+// Additional Activities
+const AdditionalActivities = () => {
+    const { t } = useLanguage();
+
+    return (
+        <motion.section
+            className="py-32 relative overflow-hidden bg-gray-50 dark:bg-pure-black transition-colors duration-300"
+        >
+            <div className="max-w-6xl mx-auto px-6 relative z-10">
+                <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center text-gray-900 dark:text-white">
+                    {t('activities.title')}
+                </h2>
+
+                <div className="grid md:grid-cols-4 gap-6">
+                    {[
+                        { title: t('activities.items.formations.title'), desc: t('activities.items.formations.desc'), icon: 'ðŸ“š', color: 'bg-blue-500' },
+                        { title: t('activities.items.opensource.title'), desc: t('activities.items.opensource.desc'), icon: 'ðŸŒ', color: 'bg-purple-500' },
+                        { title: t('activities.items.mentorat.title'), desc: t('activities.items.mentorat.desc'), icon: 'ðŸ‘¨â€ðŸ«', color: 'bg-indigo-500' },
+                        { title: t('activities.items.veille.title'), desc: t('activities.items.veille.desc'), icon: 'ðŸ”', color: 'bg-pink-500' }
+                    ].map((item, idx) => (
+                        <motion.div
+                            key={idx}
+                            whileHover={{ y: -5 }}
+                            className="bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 p-6 rounded-2xl shadow-lg relative overflow-hidden group"
+                        >
+                            <div className={`absolute top-0 right-0 w-24 h-24 ${item.color} opacity-10 rounded-bl-[100px] -mr-4 -mt-4 transition-transform group-hover:scale-110`}></div>
+                            <div className="text-4xl mb-4 relative z-10">{item.icon}</div>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">{item.desc}</p>
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+        </motion.section>
+    );
+};
+
+// Contact
+const Contact = () => {
+    const { t } = useLanguage();
+
+    return (
+        <footer className="bg-white dark:bg-black py-20 border-t border-gray-200 dark:border-white/10 transition-colors duration-300 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
+                <h2 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">{t('contact.title')}</h2>
+                <p className="text-xl text-gray-600 dark:text-gray-400 mb-12">{t('contact.subtitle')}</p>
+
+                <div className="flex justify-center gap-6 mb-16">
+                    <a href="https://github.com/MOMBO-DINGBA" className="p-4 bg-gray-100 dark:bg-white/10 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-colors text-gray-900 dark:text-white">
+                        <Github size={24} />
+                    </a>
+                    <a href="https://linkedin.com" className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-blue-600 dark:text-blue-400">
+                        <Linkedin size={24} />
+                    </a>
+                    <a href="mailto:contact@example.com" className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-full hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors text-purple-600 dark:text-purple-400">
+                        <Mail size={24} />
+                    </a>
+                </div>
+
+                <p className="text-gray-500 dark:text-gray-500 font-mono text-sm">{t('contact.footer')}</p>
+            </div>
+        </footer>
+    );
+};
+
+
+function App() {
+    return (
+        <ThemeProvider>
+            <LanguageProvider>
+                <div className="overflow-x-hidden relative">
+                    <Navigation />
+
+                    <main>
+                        <Hero />
+
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                        >
+                            <CompanyLogos />
+                        </motion.div>
+
+                        <RevealSection id="about">
+                            <About />
+                        </RevealSection>
+
+                        <RevealSection id="projects">
+                            <Projects />
+                        </RevealSection>
+
+                        <RevealSection id="skills">
+                            <Skills />
+                        </RevealSection>
+
+                        <RevealSection id="timeline">
+                            <Timeline />
+                        </RevealSection>
+
+                        <RevealSection id="activities">
+                            <AdditionalActivities />
+                        </RevealSection>
+
+                        <Contact />
+                    </main>
+                </div>
+            </LanguageProvider>
+        </ThemeProvider>
+    );
+}
+
+// Helper component for professional scroll reveal
+const RevealSection = ({ children, id }) => (
+    <motion.section
+        id={id}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-150px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    >
+        {children}
+    </motion.section>
+);
+
+export default App;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\CustomCursor.jsx
+
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useSpring, useMotionValue } from 'framer-motion';
+
+/**
+ * CustomCursor Component
+ * 
+ * A dual-layer cursor following the mouse with smooth spring physics.
+ * Reacts to interactive elements (hover state).
+ */
+const CustomCursor = () => {
+    const [isHovering, setIsHovering] = useState(false);
+    const [cursorType, setCursorType] = useState('default'); // 'default', 'pointer', 'text'
+
+    // Main cursor position
+    const cursorX = useMotionValue(-100);
+    const cursorY = useMotionValue(-100);
+
+    // Smooth spring for the outer ring
+    const springConfig = { damping: 25, stiffness: 200 };
+    const ringX = useSpring(cursorX, springConfig);
+    const ringY = useSpring(cursorY, springConfig);
+
+    useEffect(() => {
+        const moveCursor = (e) => {
+            cursorX.set(e.clientX);
+            cursorY.set(e.clientY);
+        };
+
+        const handleMouseOver = (e) => {
+            const target = e.target;
+            const isClickable = target.closest('button, a, .cursor-pointer, input, textarea');
+            setIsHovering(!!isClickable);
+
+            if (target.closest('input, textarea')) {
+                setCursorType('text');
+            } else if (isClickable) {
+                setCursorType('pointer');
+            } else {
+                setCursorType('default');
+            }
+        };
+
+        window.addEventListener('mousemove', moveCursor);
+        window.addEventListener('mouseover', handleMouseOver);
+
+        return () => {
+            window.removeEventListener('mousemove', moveCursor);
+            window.removeEventListener('mouseover', handleMouseOver);
+        };
+    }, [cursorX, cursorY]);
+
+    return (
+        <>
+            {/* Inner Dot */}
+            <motion.div
+                className="fixed top-0 left-0 w-2 h-2 bg-blue-600 rounded-full pointer-events-none z-[9999] mix-blend-difference"
+                style={{
+                    x: cursorX,
+                    y: cursorY,
+                    translateX: '-50%',
+                    translateY: '-50%',
+                }}
+            />
+
+            {/* Outer Ring */}
+            <motion.div
+                className="fixed top-0 left-0 border-2 border-blue-500 rounded-full pointer-events-none z-[9998]"
+                animate={{
+                    width: isHovering ? 60 : 32,
+                    height: isHovering ? 60 : 32,
+                    backgroundColor: isHovering ? 'rgba(59, 130, 246, 0.1)' : 'rgba(59, 130, 246, 0)',
+                    borderColor: cursorType === 'text' ? 'rgba(59, 130, 246, 0.5)' : 'rgba(59, 130, 246, 1)',
+                }}
+                style={{
+                    x: ringX,
+                    y: ringY,
+                    translateX: '-50%',
+                    translateY: '-50%',
+                }}
+            />
+
+            <style jsx global>{`
+                @media (pointer: fine) {
+                    body, a, button, .cursor-pointer {
+                        cursor: none !important;
+                    }
+                }
+            `}</style>
+        </>
+    );
+};
+
+export default CustomCursor;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\CyberField.jsx
+
+import React, { useEffect, useRef } from 'react';
+
+const CyberField = () => {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let frame = 0;
+
+        const draw = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.fillStyle = isDark ? '#000000' : '#ffffff';
+            // Fade effect for trails? No, crisp for grid.
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // or fillRect with opacity
+
+            // Perspective Grid
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const horizon = cy * 0.2; // Horizon line height
+            const speed = 2;
+            const offset = (frame * speed) % 100;
+
+            ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.3)' : 'rgba(37, 99, 235, 0.2)'; // Light Blue
+            ctx.lineWidth = 1;
+
+            // Vertical lines (converging to center)
+            for (let i = -1000; i < 2000; i += 100) {
+                const x = i;
+                ctx.beginPath();
+                ctx.moveTo(x, canvas.height);
+                ctx.lineTo(cx, horizon);
+                // This is a simple radial perspective.
+                // Better: simple vertical lines that spread out? 
+                // Let's stick to true simplified perspective:
+
+                // Keep it simple: flat grid moving towards viewer (or away)
+            }
+
+            // Let's do a "Retro Wave" style grid
+            // Vertical lines
+            const fov = 300;
+            const viewDist = 20;
+
+            ctx.beginPath();
+            for (let i = -canvas.width; i < canvas.width * 2; i += 50) {
+                // simple verticals
+                // To make them converge, we need a 3D projection logic, which is complex for a quick canvas.
+                // let's do a cheat: just lines radiating from center center-top
+                ctx.moveTo(i, canvas.height);
+                ctx.lineTo(cx, horizon);
+            }
+            ctx.stroke();
+
+            // Horizontal lines (moving down)
+            for (let y = 0; y < canvas.height; y += 40) {
+                // Creates the movement
+                const yPos = y + offset;
+                if (yPos > canvas.height) continue;
+                if (yPos < horizon) continue;
+
+                // Scale line width by distance from horizon (optional)
+
+                ctx.beginPath();
+                ctx.moveTo(0, yPos);
+                ctx.lineTo(canvas.width, yPos);
+                ctx.stroke();
+            }
+
+            // Glowing Particles rising
+            // ... (optional)
+
+            frame++;
+            requestAnimationFrame(draw);
+        };
+
+        const animationId = requestAnimationFrame(draw);
+
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+            cancelAnimationFrame(animationId);
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none opacity-40"
+        />
+    );
+};
+
+export default CyberField;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\MatrixRain.jsx
+
+import React, { useEffect, useRef } from 'react';
+
+const MatrixRain = () => {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas to full screen
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Matrix characters (Katakana + Latin + Numbers)
+        const chars = 'ã‚¢ã‚¡ã‚«ã‚µã‚¿ãƒŠãƒãƒžãƒ¤ãƒ£ãƒ©ãƒ¯ã‚¬ã‚¶ãƒ€ãƒãƒ‘ã‚¤ã‚£ã‚­ã‚·ãƒãƒ‹ãƒ’ãƒŸãƒªãƒ°ã‚®ã‚¸ãƒ‚ãƒ“ãƒ”ã‚¦ã‚¥ã‚¯ã‚¹ãƒ„ãƒŒãƒ•ãƒ ãƒ¦ãƒ¥ãƒ«ã‚°ã‚ºãƒ–ãƒ…ãƒ—ã‚¨ã‚§ã‚±ã‚»ãƒ†ãƒãƒ˜ãƒ¡ãƒ¬ãƒ±ã‚²ã‚¼ãƒ‡ãƒ™ãƒšã‚ªã‚©ã‚³ã‚½ãƒˆãƒŽãƒ›ãƒ¢ãƒ¨ãƒ§ãƒ­ãƒ²ã‚´ã‚¾ãƒ‰ãƒœãƒ1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const charArray = chars.split('');
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        // Array of drops - one per column
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        const draw = () => {
+            // Semi-transparent black to create fade effect
+            // Check if dark mode is active to adjust fade color
+            const isDark = document.documentElement.classList.contains('dark');
+
+            ctx.fillStyle = isDark ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Text color - Green or Blue depending on theme preference? 
+            // Let's stick to a techy Matrix Green/Blue hybrid
+            ctx.fillStyle = isDark ? '#0F0' : '#003300';
+            // Or maybe Blue for a more modern look matching the site theme
+            // ctx.fillStyle = '#3B82F6'; // Tailwind Blue-500
+
+            // Let's make it match the site's primary blue/purple theme
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#3B82F6'); // Blue
+            gradient.addColorStop(1, '#8B5CF6'); // Purple
+            ctx.fillStyle = gradient;
+
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        };
+
+        const interval = setInterval(draw, 33);
+
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('resize', resizeCanvas);
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full opacity-30 dark:opacity-20 pointer-events-none"
+        />
+    );
+};
+
+export default MatrixRain;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\NeuralNetwork.jsx
+
+import React, { useEffect, useRef } from 'react';
+
+const NeuralNetwork = () => {
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let animationFrameId;
+
+        const resizeCanvas = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        };
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 2 + 1; // Variable size
+                // Different colors for particles: Blue, Purple, Cyan
+                const colors = ['#3B82F6', '#8B5CF6', '#06B6D4'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+
+                // Add glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+            }
+        }
+
+        const initParticles = () => {
+            particles = [];
+            const particleCount = Math.min(window.innerWidth / 10, 100); // Responsive count
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        };
+
+        initParticles();
+        window.addEventListener('resize', initParticles); // Re-init on resize to adjust density
+
+        // Mouse interaction
+        let mouse = { x: null, y: null };
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        const animate = () => {
+            // Theme adaptation
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.fillStyle = isDark ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)';
+            // Use clearRect or fillRect with opacity for trail effect? 
+            // clearRect is cleaner for sharp lines. fillRect is better for trails.
+            // Let's use clearRect for crisp 'tech' look
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((particle) => {
+                particle.update();
+                particle.draw();
+
+                // Connect particles close to mouse
+                const dxMouse = mouse.x - particle.x;
+                const dyMouse = mouse.y - particle.y;
+                const distanceMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+                if (distanceMouse < 200) {
+                    // Pull particle slightly towards mouse
+                    const forceDirectionX = dxMouse / distanceMouse;
+                    const forceDirectionY = dyMouse / distanceMouse;
+                    const force = (200 - distanceMouse) / 200;
+                    const directionX = forceDirectionX * force * 0.5;
+                    const directionY = forceDirectionY * force * 0.5;
+                    particle.vx += directionX * 0.05;
+                    particle.vy += directionY * 0.05;
+
+                    ctx.beginPath();
+                    ctx.strokeStyle = particle.color;
+                    ctx.lineWidth = 1;
+                    ctx.globalAlpha = (200 - distanceMouse) / 200; // Face out
+                    ctx.moveTo(particle.x, particle.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+
+                // Connect particles to each other
+                particles.forEach((otherParticle) => {
+                    const dx = particle.x - otherParticle.x;
+                    const dy = particle.y - otherParticle.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = isDark ? 'rgba(100, 116, 139, 0.15)' : 'rgba(100, 116, 139, 0.1)'; // Subtle connection color
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particle.x, particle.y);
+                        ctx.lineTo(otherParticle.x, otherParticle.y);
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            // Limit speed
+            particles.forEach((particle) => {
+                const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+                if (speed > 2) {
+                    particle.vx = (particle.vx / speed) * 2;
+                    particle.vy = (particle.vy / speed) * 2;
+                }
+            });
+
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => {
+            window.removeEventListener('resize', resizeCanvas);
+            window.removeEventListener('resize', initParticles);
+            cancelAnimationFrame(animationFrameId);
+        };
+    }, []);
+
+    return (
+        <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none"
+        />
+    );
+};
+
+export default NeuralNetwork;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\ProjectCard3D.jsx
+
+import React, { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+
+/**
+ * ProjectCard3D Component
+ * 
+ * A visually engaging card with 3D tilt effects on hover.
+ * Displays project image, title, description, and tags.
+ */
+const ProjectCard3D = ({ project, onClick, t }) => {
+    const ref = useRef(null);
+
+    // Mouse position state for tilt effect
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    // Smooth spring animation for tilt
+    const mouseX = useSpring(x, { stiffness: 500, damping: 100 });
+    const mouseY = useSpring(y, { stiffness: 500, damping: 100 });
+
+    // Calculate rotation based on mouse position relative to card center
+    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+    const handleMouseMove = (e) => {
+        if (!ref.current) return;
+
+        const rect = ref.current.getBoundingClientRect();
+
+        // Calculate normalized mouse position (-0.5 to 0.5)
+        const width = rect.width;
+        const height = rect.height;
+
+        const mouseXVal = (e.clientX - rect.left) / width - 0.5;
+        const mouseYVal = (e.clientY - rect.top) / height - 0.5;
+
+        x.set(mouseXVal);
+        y.set(mouseYVal);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            style={{
+                perspective: 1000,
+            }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="w-full h-full"
+            onClick={onClick}
+        >
+            <motion.div
+                style={{
+                    rotateX,
+                    rotateY,
+                    transformStyle: "preserve-3d",
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative h-full bg-white dark:bg-[#121212] border border-gray-200 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden cursor-pointer group"
+            >
+                {/* Image Container */}
+                <div className="h-48 md:h-56 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+                    <motion.img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                        style={{ translateZ: "50px" }} // Parallax effect
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.5 }}
+                    />
+
+                    {/* Floating Tech Badges */}
+                    <div className="absolute bottom-4 left-4 z-20 flex flex-wrap gap-2" style={{ transform: "translateZ(60px)" }}>
+                        {project.technologies.slice(0, 3).map((tech) => (
+                            <span
+                                key={tech}
+                                className="px-2 py-1 text-xs font-medium bg-black/50 backdrop-blur-sm text-white rounded-md border border-white/20"
+                            >
+                                {tech}
+                            </span>
+                        ))}
+                        {project.technologies.length > 3 && (
+                            <span className="px-2 py-1 text-xs font-medium bg-black/50 backdrop-blur-sm text-white rounded-md border border-white/20">
+                                +{project.technologies.length - 3}
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 relative z-20 bg-white dark:bg-[#121212]">
+                    <div style={{ transform: "translateZ(30px)" }}>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {project.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-2 mb-4">
+                            {project.description}
+                        </p>
+
+                        <div className="flex items-center text-blue-600 dark:text-blue-400 text-sm font-semibold group-hover:underline">
+                            {t ? t('projects.viewDetails') : 'View Details'} <ChevronRight className="w-4 h-4 ml-1" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Shine Effect */}
+                <div
+                    className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{
+                        background: `radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 80%)`,
+                        transform: "translateZ(1px)"
+                    }}
+                />
+            </motion.div>
+        </motion.div>
+    );
+};
+
+export default ProjectCard3D;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\ScrollTimeline.jsx
+
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+
+/**
+ * ScrollTimeline Component
+ * 
+ * A vertical timeline that animates as the user scrolls.
+ * Features a glowing central beam and items that slide in.
+ */
+const ScrollTimeline = ({ experiences, t }) => {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "end end"]
+    });
+
+    const scaleY = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    return (
+        <div ref={ref} className="relative container mx-auto px-6 py-20">
+            {/* Central Beam */}
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gray-200 dark:bg-white/10 -translate-x-1/2">
+                <motion.div
+                    style={{ scaleY, transformOrigin: "top" }}
+                    className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-500 via-purple-500 to-blue-500"
+                />
+            </div>
+
+            <div className="space-y-24">
+                {experiences.map((exp, idx) => (
+                    <TimelineItem key={idx} data={exp} index={idx} />
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const TimelineItem = ({ data, index }) => {
+    const ref = useRef(null);
+    const isEven = index % 2 === 0;
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: index * 0.1 }}
+            className={`relative flex items-center md:justify-between ${isEven ? 'md:flex-row-reverse' : ''}`}
+        >
+            {/* Spacer */}
+            <div className="hidden md:block w-5/12" />
+
+            {/* Central Node */}
+            <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-12 h-12 z-10 flex items-center justify-center">
+                <div className="w-4 h-4 bg-blue-500 rounded-full animate-pulse shadow-[0_0_20px_rgba(59,130,246,0.8)]" />
+                <div className="absolute inset-0 border-2 border-blue-500/30 rounded-full animate-ping" />
+            </div>
+
+            {/* Content Card */}
+            <div className="w-full md:w-5/12 pl-20 md:pl-0">
+                <motion.div
+                    whileHover={{ y: -5 }}
+                    className="bg-white dark:bg-[#121212] border border-gray-100 dark:border-white/10 p-6 rounded-2xl shadow-lg relative group overflow-hidden"
+                >
+                    {/* Background Gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    <div className="relative z-10">
+                        <span className="inline-block px-3 py-1 mb-2 text-xs font-semibold text-blue-600 bg-blue-100 dark:bg-blue-900/30 dark:text-blue-300 rounded-full">
+                            {data.period}
+                        </span>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
+                            {data.title}
+                        </h3>
+                        <div className="flex items-center gap-2 mb-4 text-gray-500 dark:text-gray-400 text-sm">
+                            {data.logo ? (
+                                <img src={data.logo} alt={data.organization} className="w-5 h-5 rounded-full object-cover" />
+                            ) : (
+                                <span>ðŸ¢</span>
+                            )}
+                            {data.organization}
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
+                            {data.description}
+                        </p>
+                    </div>
+                </motion.div>
+            </div>
+        </motion.div>
+    );
+};
+
+export default ScrollTimeline;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\SpotlightCard.jsx
+
+import React, { useRef, useState } from 'react';
+
+export const SpotlightCard = ({ children, className = "" }) => {
+    const divRef = useRef(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [opacity, setOpacity] = useState(0);
+
+    const handleMouseMove = (e) => {
+        if (!divRef.current) return;
+
+        const rect = divRef.current.getBoundingClientRect();
+        setPosition({
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+        });
+    };
+
+    const handleMouseEnter = () => {
+        setOpacity(1);
+    };
+
+    const handleMouseLeave = () => {
+        setOpacity(0);
+    };
+
+    return (
+        <div
+            ref={divRef}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={`relative overflow-hidden ${className}`}
+        >
+            <div
+                className="pointer-events-none absolute -inset-px opacity-0 transition duration-300"
+                style={{
+                    opacity,
+                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.1), transparent 40%)`,
+                }}
+            />
+            {children}
+        </div>
+    );
+};
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\TechOrbit.jsx
+
+import React, { useRef, useMemo } from 'react';
+import { motion } from 'framer-motion';
+
+/**
+ * TechOrbit Component
+ * 
+ * A rotating 3D-like sphere of technology names.
+ * Uses CSS 3D transforms for high performance without Three.js.
+ */
+const TechOrbit = ({ skills }) => {
+    const containerRef = useRef(null);
+
+    // Calculate 3D positions for a sphere
+    const sphereSkills = useMemo(() => {
+        const radius = 250;
+        return skills.map((skill, i) => {
+            const phi = Math.acos(-1 + (2 * i) / skills.length);
+            const theta = Math.sqrt(skills.length * Math.PI) * phi;
+
+            return {
+                name: skill,
+                x: radius * Math.cos(theta) * Math.sin(phi),
+                y: radius * Math.sin(theta) * Math.sin(phi),
+                z: radius * Math.cos(phi),
+            };
+        });
+    }, [skills]);
+
+    return (
+        <div className="relative h-[600px] w-full flex items-center justify-center overflow-hidden perspective-1000">
+            <motion.div
+                animate={{
+                    rotateY: 360,
+                    rotateX: [0, 10, -10, 0],
+                }}
+                transition={{
+                    duration: 30,
+                    repeat: Infinity,
+                    ease: "linear",
+                }}
+                className="relative w-1 h-1 preserve-3d"
+            >
+                {sphereSkills.map((skill, idx) => (
+                    <motion.div
+                        key={idx}
+                        className="absolute whitespace-nowrap px-4 py-2 bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/20 rounded-full text-sm font-bold text-blue-600 dark:text-blue-400 shadow-xl cursor-default pointer-events-auto hover:bg-blue-600 hover:text-white transition-colors duration-300"
+                        style={{
+                            x: skill.x,
+                            y: skill.y,
+                            z: skill.z,
+                        }}
+                        whileHover={{ scale: 1.2, z: skill.z + 50 }}
+                    >
+                        {skill.name}
+                    </motion.div>
+                ))}
+
+                {/* Center Glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl" />
+            </motion.div>
+
+            <style jsx>{`
+                .perspective-1000 {
+                    perspective: 1000px;
+                }
+                .preserve-3d {
+                    transform-style: preserve-3d;
+                }
+            `}</style>
+        </div>
+    );
+};
+
+export default TechOrbit;
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\components\TypewriterEffect.jsx
+
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+export const TypewriterEffect = ({ words, className }) => {
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [currentText, setCurrentText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+        const word = words[currentWordIndex];
+        const typeSpeed = isDeleting ? 50 : 100;
+
+        const timer = setTimeout(() => {
+            if (!isDeleting) {
+                setCurrentText(word.substring(0, currentText.length + 1));
+                if (currentText.length === word.length) {
+                    setTimeout(() => setIsDeleting(true), 2000);
+                }
+            } else {
+                setCurrentText(word.substring(0, currentText.length - 1));
+                if (currentText.length === 0) {
+                    setIsDeleting(false);
+                    setCurrentWordIndex((prev) => (prev + 1) % words.length);
+                }
+            }
+        }, typeSpeed);
+
+        return () => clearTimeout(timer);
+    }, [currentText, isDeleting, currentWordIndex, words]);
+
+    return (
+        <span className={className}>
+            {currentText}
+            <motion.span
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 0.8, repeat: Infinity }}
+                className="inline-block w-1 h-[1em] bg-blue-500 ml-1 align-middle"
+            />
+        </span>
+    );
+};
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\constants\translations.js
+
+export const translations = {
+    fr: {
+        nav: {
+            about: "Ã€ Propos",
+            projects: "Projets",
+            skills: "CompÃ©tences",
+            timeline: "Parcours",
+            contact: "Contact"
+        },
+        hero: {
+            role1: "IngÃ©nieur Junior ML",
+            role2: "Architecte SystÃ¨mes IA",
+            role3: "DÃ©veloppeur Full Stack",
+            cta: "DÃ©couvrir mon Portfolio",
+            scroll: "DÃ©couvrir"
+        },
+        about: {
+            title: "Ã€ Propos",
+            p1: "DiplÃ´mÃ© de l'ENSPY (Ã‰cole Nationale SupÃ©rieure Polytechnique de YaoundÃ©), je suis un ingÃ©nieur ML spÃ©cialisÃ© dans la conception de systÃ¨mes distribuÃ©s intelligents et l'orchestration d'agents autonomes.",
+            p2: "Mon expertise se concentre sur l'architecture event-driven, les compromis entre latence, dÃ©terminisme et scalabilitÃ©, ainsi que l'intÃ©gration de modÃ¨les de langage (LLM) dans des systÃ¨mes de production critiques.",
+            p3: "PassionnÃ© par l'IA agentique et les systÃ¨mes temps rÃ©el, je travaille sur des projets innovants combinant FastAPI, Kafka, Redis, LangGraph et Kubernetes pour crÃ©er des solutions scalables et robustes."
+        },
+        projects: {
+            title: "Projets",
+            subtitle: "DÃ©couvrez mes rÃ©alisations techniques et innovations dans l'IA et le dÃ©veloppement systÃ¨me.",
+            viewDetails: "Voir les dÃ©tails",
+            techDetails: "DÃ©tails Techniques",
+            p1: {
+                title: "Autonomous Agentic ERP Bridge",
+                desc: "Automatisation de la prise de dÃ©cision ERP via agents intelligents",
+                fullDesc: "SystÃ¨me event-driven pour l'automatisation de la prise de dÃ©cision ERP (Inventory & Logistics) via des agents intelligents capables d'analyser des flux d'Ã©vÃ©nements en temps rÃ©el et d'exÃ©cuter des actions critiques avec validation dÃ©terministe.",
+                details: [
+                    "Architecture event-driven avec FastAPI pour l'orchestration",
+                    "Kafka pour le streaming d'Ã©vÃ©nements haute-frÃ©quence",
+                    "Redis pour la gestion d'Ã©tat distribuÃ©e",
+                    "LLM (LangGraph/Pydantic) pour le raisonnement contextuel",
+                    "Safety Guardrails : validation Pydantic avant Ã©criture DB",
+                    "Workers asynchrones Celery pour traitement parallÃ¨le",
+                    "Latence de dÃ©cision < 300ms pour 95% des Ã©vÃ©nements",
+                    "Taux de validation : 99.2%"
+                ]
+            },
+            p2: {
+                title: "Application de Communication Temps RÃ©el",
+                desc: "Plateforme complÃ¨te avec chat, appels audio et vidÃ©o",
+                fullDesc: "Plateforme de communication complÃ¨te avec chat textuel, appels audio et vidÃ©o. ImplÃ©mentation WebRTC pour les flux mÃ©dia peer-to-peer, WebSocket pour la synchronisation temps rÃ©el, et architecture backend scalable.",
+                details: [
+                    "ImplÃ©mentation WebRTC pour streaming audio/vidÃ©o avec latence <100ms",
+                    "Architecture WebSocket pour synchronisation multi-utilisateurs",
+                    "Gestion de sessions concurrentes et optimisation de la bande passante",
+                    "Interface React responsive et intuitive",
+                    "Backend Node.js scalable avec Socket.io"
+                ]
+            }
+        },
+        skills: {
+            title: "CompÃ©tences",
+            subtitle: "Un arsenal technologique complet pour concevoir des systÃ¨mes intelligents et robustes.",
+            categories: {
+                core: "SystÃ¨mes Fondamentaux",
+                ai: "Orchestration IA",
+                infra: "Infrastructure",
+                ml: "ML & DonnÃ©es"
+            }
+        },
+        timeline: {
+            title: "Mon Parcours",
+            subtitle: "Mon parcours acadÃ©mique et professionnel",
+            exp1: {
+                title: "Master of Engineering",
+                org: "ENSPY",
+                desc: "Ã‰cole Nationale SupÃ©rieure Polytechnique de YaoundÃ© - SpÃ©cialisation en Intelligence Artificielle et SystÃ¨mes DistribuÃ©s"
+            },
+            exp2: {
+                title: "Stage - DÃ©veloppement Full Stack",
+                org: "Projet de Communication Temps RÃ©el",
+                desc: "ImplÃ©mentation WebRTC pour streaming audio/vidÃ©o avec latence <100ms. Architecture WebSocket pour synchronisation multi-utilisateurs."
+            },
+            exp3: {
+                title: "Certification Machine Learning",
+                org: "Coursera x Stanford",
+                desc: "Supervised Machine Learning: Regression and Classification par Andrew Ng"
+            },
+            exp4: {
+                title: "Bac+2 MathÃ©matiques Pures",
+                org: "UniversitÃ© de NgaoundÃ©rÃ©",
+                desc: "Formation en mathÃ©matiques fondamentales et appliquÃ©es"
+            }
+        },
+        activities: {
+            title: "ActivitÃ©s ComplÃ©mentaires",
+            items: {
+                formations: {
+                    title: "Formations",
+                    desc: "Certifications en Machine Learning, Deep Learning et Cloud Computing"
+                },
+                opensource: {
+                    title: "Open Source",
+                    desc: "Contributions actives Ã  des projets ML et tools communautaires"
+                },
+                mentorat: {
+                    title: "Mentorat",
+                    desc: "Accompagnement d'Ã©tudiants en programmation et IA"
+                },
+                veille: {
+                    title: "Veille",
+                    desc: "Recherche continue sur l'IA et les systÃ¨mes distribuÃ©s"
+                }
+            }
+        },
+        contact: {
+            title: "Contact",
+            subtitle: "PrÃªt Ã  collaborer sur des projets ambitieux ? Transformons vos idÃ©es en rÃ©alitÃ©.",
+            btn: "Me contacter",
+            footer: "Â© 2026 MOMBO DINGBA Emmanuel."
+        }
+    },
+    en: {
+        nav: {
+            about: "About",
+            projects: "Projects",
+            skills: "Skills",
+            timeline: "Timeline",
+            contact: "Contact"
+        },
+        hero: {
+            role1: "Junior ML Engineer",
+            role2: "AI Systems Architect",
+            role3: "Full Stack Developer",
+            cta: "Discover my Portfolio",
+            scroll: "Discover"
+        },
+        about: {
+            title: "About Me",
+            p1: "Graduate of ENSPY (National Advanced School of Engineering of YaoundÃ©), I am an ML Engineer specialized in designing intelligent distributed systems and orchestrating autonomous agents.",
+            p2: "My expertise focuses on event-driven architecture, trade-offs between latency, determinism, and scalability, as well as integrating Large Language Models (LLMs) into critical production systems.",
+            p3: "Passionate about Agentic AI and real-time systems, I work on innovative projects combining FastAPI, Kafka, Redis, LangGraph, and Kubernetes to create scalable and robust solutions."
+        },
+        projects: {
+            title: "Projects",
+            subtitle: "Discover my technical achievements and innovations in AI and system development.",
+            viewDetails: "View Details",
+            techDetails: "Technical Details",
+            p1: {
+                title: "Autonomous Agentic ERP Bridge",
+                desc: "ERP decision-making automation via intelligent agents",
+                fullDesc: "Event-driven system for automating ERP decision-making (Inventory & Logistics) via intelligent agents capable of analyzing real-time event streams and executing critical actions with deterministic validation.",
+                details: [
+                    "Event-driven architecture with FastAPI for orchestration",
+                    "Kafka for high-frequency event streaming",
+                    "Redis for distributed state management",
+                    "LLM (LangGraph/Pydantic) for contextual reasoning",
+                    "Safety Guardrails: Pydantic validation before DB write",
+                    "Celery asynchronous workers for parallel processing",
+                    "Decision latency < 300ms for 95% of events",
+                    "Validation rate: 99.2%"
+                ]
+            },
+            p2: {
+                title: "Real-Time Communication App",
+                desc: "Complete platform with chat, audio, and video calls",
+                fullDesc: "Complete communication platform with text chat, audio, and video calls. WebRTC implementation for peer-to-peer media streams, WebSocket for real-time synchronization, and scalable backend architecture.",
+                details: [
+                    "WebRTC implementation for audio/video streaming with <100ms latency",
+                    "WebSocket architecture for multi-user synchronization",
+                    "Concurrent session management and bandwidth optimization",
+                    "Responsive and intuitive React interface",
+                    "Scalable Node.js backend with Socket.io"
+                ]
+            }
+        },
+        skills: {
+            title: "Skills",
+            subtitle: "A complete technological arsenal to design intelligent and robust systems.",
+            categories: {
+                core: "Core Systems",
+                ai: "AI Orchestration",
+                infra: "Infrastructure",
+                ml: "ML & Data"
+            }
+        },
+        timeline: {
+            title: "My Journey",
+            subtitle: "My academic and professional background",
+            exp1: {
+                title: "Master of Engineering",
+                org: "ENSPY",
+                desc: "National Advanced School of Engineering of YaoundÃ© - Specialization in Artificial Intelligence and Distributed Systems"
+            },
+            exp2: {
+                title: "Internship - Full Stack Development",
+                org: "Real-Time Communication Project",
+                desc: "WebRTC implementation for audio/video streaming with <100ms latency. WebSocket architecture for multi-user synchronization."
+            },
+            exp3: {
+                title: "Machine Learning Certification",
+                org: "Coursera x Stanford",
+                desc: "Supervised Machine Learning: Regression and Classification by Andrew Ng"
+            },
+            exp4: {
+                title: "Associate Degree in Pure Mathematics",
+                org: "University of NgaoundÃ©rÃ©",
+                desc: "Training in fundamental and applied mathematics"
+            }
+        },
+        activities: {
+            title: "Additional Activities",
+            items: {
+                formations: {
+                    title: "Training",
+                    desc: "Certifications in Machine Learning, Deep Learning, and Cloud Computing"
+                },
+                opensource: {
+                    title: "Open Source",
+                    desc: "Active contributions to ML projects and community tools"
+                },
+                mentorat: {
+                    title: "Mentoring",
+                    desc: "Mentoring students in programming and AI"
+                },
+                veille: {
+                    title: "Tech Watch",
+                    desc: "Continuous research on AI and distributed systems"
+                }
+            }
+        },
+        contact: {
+            title: "Contact",
+            subtitle: "Ready to collaborate on ambitious projects? Let's turn your ideas into reality.",
+            btn: "Contact Me",
+            footer: "Â© 2026 MOMBO DINGBA Emmanuel."
+        }
+    }
+};
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\contexts\LanguageContext.jsx
+
+import React, { createContext, useContext, useState } from 'react';
+import { translations } from '../constants/translations';
+
+const LanguageContext = createContext();
+
+export const LanguageProvider = ({ children }) => {
+    // Default to French
+    const [language, setLanguage] = useState('fr');
+
+    const toggleLanguage = () => {
+        setLanguage((prev) => (prev === 'fr' ? 'en' : 'fr'));
+    };
+
+    const t = (key) => {
+        const keys = key.split('.');
+        let value = translations[language];
+
+        for (const k of keys) {
+            value = value?.[k];
+        }
+
+        return value || key;
+    };
+
+    // Helper to get nested object (e.g., for iterating over arrays in translation)
+    const getTranslationObject = (key) => {
+        const keys = key.split('.');
+        let value = translations[language];
+
+        for (const k of keys) {
+            value = value?.[k];
+        }
+
+        return value || {};
+    }
+
+    return (
+        <LanguageContext.Provider value={{ language, toggleLanguage, t, getTranslationObject }}>
+            {children}
+        </LanguageContext.Provider>
+    );
+};
+
+export const useLanguage = () => useContext(LanguageContext);
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\contexts\ThemeContext.jsx
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+    // Check local storage or system preference on mount
+    const [theme, setTheme] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme;
+            }
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+        }
+        return 'dark'; // Default to dark
+    });
+
+    useEffect(() => {
+        const root = window.document.documentElement;
+        if (theme === 'dark') {
+            root.classList.add('dark');
+        } else {
+            root.classList.remove('dark');
+        }
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+    };
+
+    return (
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            {children}
+        </ThemeContext.Provider>
+    );
+};
+
+export const useTheme = () => useContext(ThemeContext);
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\index.css
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 dark:bg-[#000000] dark:text-white transition-all duration-700 ease-in-out;
+  }
+
+  /* Smooth scrolling for anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    @apply transition-colors duration-300;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+::selection {
+  @apply bg-blue-500/30 text-blue-900 dark:text-white;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-[#1F1F23] rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-[#2F2F33];
+}
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\src\main.jsx
+
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
+)
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\tailwind.config.js
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    darkMode: 'class',
+    theme: {
+        extend: {
+            colors: {
+                'pure-black': '#000000',
+                'pure-white': '#FFFFFF',
+                'border-gray': '#1F1F23',
+                'text-secondary': '#A1A1AA',
+            },
+            fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+                mono: ['JetBrains Mono', 'monospace'],
+            },
+            animation: {
+                'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+            },
+            keyframes: {
+                fadeInUp: {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateY(20px)',
+                    },
+                    '100%': {
+                        opacity: '1',
+                        transform: 'translateY(0)',
+                    },
+                },
+            },
+        },
+    },
+    plugins: [],
+}
+
+
+// END OF FILE
+
+//---> PATH: C:\Users\HADRON\Desktop\Fine tuning LLM\portfolio-mombo\vite.config.js
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  base: '/portfolio_mombo/',
+})
+
+
+// END OF FILE
+
