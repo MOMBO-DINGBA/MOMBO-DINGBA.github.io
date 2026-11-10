@@ -1,0 +1,15 @@
+{
+  "short_name": "MOMBO Portfolio",
+  "name": "Emmanuel Mombo-Dingba - Portfolio",
+  "icons": [
+    {
+      "src": "/images/mombo_profil.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#F8F6F0",
+  "theme_color": "#0C3E37",
+  "display": "standalone"
+}

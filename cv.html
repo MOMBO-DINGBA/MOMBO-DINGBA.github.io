@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV — Emmanuel Mombo-Dingba | AI Engineer @ HADRON S.A.</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 12mm 15mm 12mm 15mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #111827;
+      background: #F8F9FA;
+      font-size: 9.5pt;
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #0C3E37;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+    .toolbar a, .toolbar button {
+      background: #25D366;
+      color: #111B21;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .toolbar a:hover, .toolbar button:hover {
+      background: #20ba5a;
+      transform: translateY(-1px);
+    }
+    .toolbar .btn-secondary {
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .toolbar .btn-secondary:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .page-wrapper {
+      max-width: 820px;
+      margin: 24px auto;
+      background: #FFFFFF;
+      padding: 38px 45px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+      border-radius: 4px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #0C3E37;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .header-left {
+      flex: 1;
+    }
+    .name {
+      font-size: 22pt;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0F172A;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .title-line {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #0C3E37;
+      margin-bottom: 6px;
+    }
+    .badge-current {
+      display: inline-block;
+      background: #E8F5E9;
+      color: #1B5E20;
+      border: 1px solid #A5D6A7;
+      font-size: 7.5pt;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      font-size: 8.5pt;
+      color: #475569;
+    }
+    .contact-row a {
+      color: #0C3E37;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .qr-card {
+      width: 80px;
+      text-align: center;
+      background: #F8FAF9;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 6px;
+      margin-left: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+    }
+    .qr-card img {
+      width: 66px;
+      height: 66px;
+      display: block;
+    }
+    .qr-card span {
+      font-size: 6pt;
+      font-weight: 800;
+      color: #0C3E37;
+      margin-top: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.1;
+    }
+    .qr-card small {
+      font-size: 5pt;
+      color: #64748B;
+    }
+    .section {
+      margin-bottom: 13px;
+    }
+    .section-title {
+      font-size: 9.8pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #0C3E37;
+      border-bottom: 1px solid #0C3E37;
+      padding-bottom: 2px;
+      margin-bottom: 7px;
+    }
+    .profile-p {
+      font-size: 8.8pt;
+      color: #334155;
+      text-align: justify;
+      line-height: 1.4;
+    }
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2px;
+    }
+    .item-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0F172A;
+    }
+    .item-company {
+      font-size: 9pt;
+      font-weight: 700;
+      font-style: italic;
+      color: #0C3E37;
+    }
+    .item-date {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #0F172A;
+      text-align: right;
+    }
+    .item-location {
+      font-size: 8pt;
+      font-weight: 500;
+      color: #64748B;
+      text-align: right;
+    }
+    ul.bullet-list {
+      list-style-type: disc;
+      padding-left: 15px;
+      margin-top: 3px;
+    }
+    ul.bullet-list li {
+      font-size: 8.4pt;
+      color: #334155;
+      margin-bottom: 2.5px;
+      line-height: 1.35;
+    }
+    .tech-row {
+      font-size: 8pt;
+      color: #0C3E37;
+      font-weight: 600;
+      margin-top: 2px;
+      font-style: italic;
+    }
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5pt;
+    }
+    .skills-table td {
+      padding: 2px 0;
+      vertical-align: top;
+    }
+    .skills-label {
+      font-weight: 700;
+      color: #0F172A;
+      width: 175px;
+    }
+    .skills-val {
+      color: #334155;
+    }
+    .page-footer {
+      text-align: center;
+      font-size: 8pt;
+      color: #94A3B8;
+      border-top: 1px solid #E2E8F0;
+      padding-top: 8px;
+      margin-top: 18px;
+    }
+    @media print {
+      body {
+        background: white;
+      }
+      .toolbar {
+        display: none !important;
+      }
+      .page-wrapper {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: none;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky top bar for viewers -->
+  <div class="toolbar">
+    <div>
+      <strong>Emmanuel Mombo-Dingba</strong> · Curriculum Vitae
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <a href="/cv_mombo.pdf" download="Emmanuel_Mombo_Dingba_AI_Engineer_CV.pdf">
+        ⬇️ Télécharger PDF (EN)
+      </a>
+      <a href="/Emmanuel_Mombo_Dingba_CV_FR.pdf" download="Emmanuel_Mombo_Dingba_CV_FR.pdf" class="btn-secondary">
+        ⬇️ Télécharger PDF (FR)
+      </a>
+      <button onclick="window.print()" class="btn-secondary">
+        🖨️ Imprimer
+      </button>
+      <a href="/" class="btn-secondary">
+        🌐 Portfolio
+      </a>
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <h1 class="name">Emmanuel Mombo-Dingba</h1>
+        <div class="title-line">Computer Engineer | Artificial Intelligence & Machine Learning Engineer</div>
+        <div class="badge-current">🟢 Actuellement AI Engineer @ HADRON S.A.</div>
+        <div class="contact-row">
+          <span>📍 Yaounde, Cameroon</span>
+          <span>📞 <a href="tel:+237653867570">+237 653 867 570</a></span>
+          <span>✉️ <a href="mailto:mombodingba.emmanuel@gmail.com">mombodingba.emmanuel@gmail.com</a></span>
+        </div>
+        <div class="contact-row" style="margin-top: 4px;">
+          <span>🐙 <a href="https://github.com/MOMBO-DINGBA" target="_blank">github.com/MOMBO-DINGBA</a></span>
+          <span>💼 <a href="https://linkedin.com/in/emmanuel-mombo-dingba-56285b234" target="_blank">linkedin.com/in/emmanuel-mombo-dingba</a></span>
+          <span>🌐 <a href="https://mombo-dingba.github.io/" target="_blank">mombo-dingba.github.io</a></span>
+        </div>
+      </div>
+
+      <a href="https://mombo-dingba.github.io/" target="_blank" class="qr-card" title="Scanner pour ouvrir le portfolio en ligne">
+        <img src="/qr-portfolio.png" alt="QR Portfolio">
+        <span>Scan Portfolio</span>
+        <small>mombo-dingba.github.io</small>
+      </a>
+    </div>
+
+    <!-- Section: Profile -->
+    <div class="section">
+      <div class="section-title">Profile</div>
+      <p class="profile-p">
+        Computer Engineer (ENSPY) and AI Engineer at HADRON S.A. with proven hands-on experience in Artificial Intelligence, Machine Learning, Multi-Agent Systems, and enterprise Large Language Models (LLMs). Experienced in designing and integrating AI-driven solutions into production enterprise systems (ERP, microservices, real-time event-driven pipelines). Solid mathematical foundation (Linear Algebra, Calculus, Probability, Statistics, Optimization) combined with advanced proficiency in Python, FastAPI, Docker, and modern ML/DL frameworks.
+      </p>
+    </div>
+
+    <!-- Section: Education -->
+    <div class="section">
+      <div class="section-title">Education</div>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <span class="item-title">National Advanced School of Engineering (ENSPY)</span>
+          <span class="item-location">Yaounde, Cameroon</span>
+        </div>
+        <div class="item-header">
+          <span class="item-company">Engineering Degree in Computer Engineering</span>
+          <span class="item-date">2021 – 2026</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="item-header">
+          <span class="item-title">University of Ngaoundere</span>
+          <span class="item-location">Ngaoundere, Cameroon</span>
+        </div>
+        <div class="item-header">
+          <span class="item-company">Undergraduate Studies in Pure Mathematics</span>
+          <span class="item-date">2019 – 2021</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section: Technical Skills -->
+    <div class="section">
+      <div class="section-title">Technical Skills</div>
+      <table class="skills-table">
+        <tr>
+          <td class="skills-label">Programming:</td>
+          <td class="skills-val">Python, SQL, JavaScript, TypeScript, Java, Bash</td>
+        </tr>
+        <tr>
+          <td class="skills-label">AI & Machine Learning:</td>
+          <td class="skills-val">Machine Learning, Deep Learning, NLP, Large Language Models (LLMs), RAG, Multi-Agent Systems</td>
+        </tr>
+        <tr>
+          <td class="skills-label">Deep Learning:</td>
+          <td class="skills-val">Neural Networks, CNNs, RNNs, LSTMs, Transformers, Attention Mechanisms</td>
+        </tr>
+        <tr>
+          <td class="skills-label">Frameworks & Libraries:</td>
+          <td class="skills-val">PyTorch, TensorFlow, Keras, Scikit-learn, LangChain, LangGraph, Pandas, NumPy, OpenCV</td>
+        </tr>
+        <tr>
+          <td class="skills-label">Data & Visualization:</td>
+          <td class="skills-val">PostgreSQL, MySQL, Redis, Redis Streams, Kafka, Matplotlib, Seaborn</td>
+        </tr>
+        <tr>
+          <td class="skills-label">Software & Deployment:</td>
+          <td class="skills-val">Git, GitHub, GitLab, Docker, Linux, REST APIs, Microservices, Celery, Jupyter, Google Colab</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Section: Professional Experience -->
+    <div class="section">
+      <div class="section-title">Professional Experience</div>
+
+      <!-- HADRON S.A. -->
+      <div style="margin-bottom: 12px;">
+        <div class="item-header">
+          <span class="item-title">AI Engineer <span style="color: #108040; font-size: 7.5pt; font-weight: 800;">[CURRENT POSITION]</span></span>
+          <span class="item-date">Feb 2026 – Present</span>
+        </div>
+        <div class="item-header">
+          <span class="item-company">HADRON S.A.</span>
+          <span class="item-location">Yaounde, Cameroon</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Contributed to the design and implementation of an intelligent logistics platform integrated with an enterprise ERP system.</li>
+          <li>Designed and integrated AI-driven components to support the automation and optimization of logistics workflows.</li>
+          <li>Worked on a Multi-Agent System (MAS) architecture coordinating intelligent services and automating business processes.</li>
+          <li>Integrated a conversational AI assistant based on Large Language Models (LLMs) and NLP for natural-language interaction and planning assistance.</li>
+          <li>Contributed to the software architecture of AI services using Python, PostgreSQL, Redis Streams and microservices.</li>
+        </ul>
+        <div class="tech-row">Technologies: Python, LangChain, LangGraph, LLMs, NLP, PostgreSQL, Redis Streams, Docker, Microservices, Celery</div>
+      </div>
+
+      <!-- ENSPY -->
+      <div>
+        <div class="item-header">
+          <span class="item-title">Software Engineering Intern</span>
+          <span class="item-date">Jul 2025 – Sep 2025</span>
+        </div>
+        <div class="item-header">
+          <span class="item-company">National Advanced School of Engineering (ENSPY)</span>
+          <span class="item-location">Yaounde, Cameroon</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Developed a real-time communication platform supporting messaging and peer-to-peer video communication.</li>
+          <li>Implemented real-time communication using Socket.IO and WebRTC protocols with sub-100ms latency.</li>
+          <li>Contributed to backend architecture, REST APIs and real-time data synchronization.</li>
+          <li>Collaborated in an Agile development environment through sprint planning, code reviews and technical discussions.</li>
+        </ul>
+        <div class="tech-row">Technologies: React.js, Node.js, Socket.IO, WebRTC, REST APIs, Flutter</div>
+      </div>
+    </div>
+
+    <!-- Section: Selected Projects -->
+    <div class="section">
+      <div class="section-title">Selected AI & Engineering Projects</div>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <span class="item-title">Autonomous Agentic ERP Bridge & Logistics Assistant</span>
+          <span class="item-location">HADRON S.A.</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Event-driven autonomous decision system for ERP logistics workflows via coordinated reasoning agents.</li>
+          <li>Redis Streams streaming, LangGraph contextual reasoning, and Pydantic deterministic safety guardrails.</li>
+          <li>Maintains sub-300ms decision latency on 95% of events with a 99.2% automated validation rate.</li>
+        </ul>
+        <div class="tech-row">Technologies: Python, FastAPI, LangGraph, Redis Streams, PostgreSQL, Docker, Celery</div>
+      </div>
+
+      <div>
+        <div class="item-header">
+          <span class="item-title">Diabetes Prediction Using Machine Learning</span>
+          <span class="item-location">Open Source / ML Lab</span>
+        </div>
+        <ul class="bullet-list">
+          <li>Developed and compared multiple classification models (Logistic Regression, Support Vector Machines, Random Forest).</li>
+          <li>Performed exploratory data analysis, outlier imputation, automated scaling, and cross-validation.</li>
+          <li>Evaluated model performance using Accuracy, Precision, Recall, F1-score and ROC-AUC metrics.</li>
+        </ul>
+        <div class="tech-row">Technologies: Python, Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn</div>
+      </div>
+    </div>
+
+    <!-- Section: Continuous Learning & Stanford Online -->
+    <div class="section">
+      <div class="section-title">Additional AI/ML Training (Stanford Online)</div>
+      <div class="item-header">
+        <span class="item-title">Self-Directed Study Using Stanford Online Resources</span>
+        <span class="item-date">2023 – Present</span>
+      </div>
+      <ul class="bullet-list">
+        <li>Machine Learning concepts inspired by CS229 (Supervised/Unsupervised Learning, Kernel Methods, Learning Theory).</li>
+        <li>Deep Learning & Computer Vision concepts inspired by CS231n (Convolutional Networks, Spatial Features, Object Detection).</li>
+        <li>Natural Language Processing concepts inspired by CS224n (Word Embeddings, Transformers, Attention Mechanisms, LLMs).</li>
+      </ul>
+    </div>
+
+    <!-- Section: Languages & Interests -->
+    <div class="section">
+      <div class="section-title">Languages & Interests</div>
+      <p class="profile-p">
+        <strong>Languages:</strong> French (Native) &nbsp;|&nbsp; English (Professional working proficiency)<br>
+        <strong>Research Interests:</strong> AI for Healthcare Diagnostics, Agricultural Optimization in Africa, Scalable ML Systems in Resource-Constrained Environments.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      Emmanuel Mombo-Dingba · Curriculum Vitae · <a href="https://mombo-dingba.github.io/" style="color: #0C3E37; text-decoration: none;">mombo-dingba.github.io</a>
+    </div>
+
+  </div>
+</body>
+</html>
