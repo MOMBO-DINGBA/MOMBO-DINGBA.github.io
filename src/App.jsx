@@ -1,238 +1,320 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Github, Linkedin, Mail, X, ChevronDown, Code2, Brain, Server, Cpu, Globe, Moon, Sun, Languages } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    Download,
+    ExternalLink,
+    FileText,
+    QrCode,
+    Sparkles,
+    CheckCircle2,
+    ArrowRight,
+    Github,
+    Linkedin,
+    Mail,
+    Phone,
+    MapPin,
+    Briefcase,
+    GraduationCap,
+    Cpu,
+    Layers,
+    Bot,
+    Moon,
+    Sun,
+    Languages,
+    Printer,
+    Code2,
+    Database,
+    Server,
+    Activity,
+    Award,
+    MessageCircle,
+    Copy,
+    Check,
+    X,
+    ChevronRight
+} from 'lucide-react';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Images
+import Mombo from './assets/images/Mombo.jpg';
+import profilMombo from './assets/images/mombo_profil.png';
 import logoEnspy from './assets/images/logo_enspy.jpg';
 import logoStanford from './assets/images/stanford_logo.png';
 import logoNgaoundere from './assets/images/Univ_Ndere_logo.jpg';
-import profilMombo from './assets/images/mombo_profil.png';
-import Mombo from './assets/images/Mombo.jpg'
-import NeuralNetwork from './components/NeuralNetwork';
-import ProjectCard3D from './components/ProjectCard3D';
-import ScrollTimeline from './components/ScrollTimeline';
-import TechOrbit from './components/TechOrbit';
 
-// Lazy load heavy background components
-const MatrixRain = React.lazy(() => import('./components/MatrixRain'));
-const CyberField = React.lazy(() => import('./components/CyberField'));
-
-
-// Components
-const TypewriterEffect = ({ words, className }) => {
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [currentText, setCurrentText] = useState('');
-    const [isDeleting, setIsDeleting] = useState(false);
-
-    useEffect(() => {
-        const word = words[currentWordIndex];
-        const typeSpeed = isDeleting ? 50 : 100;
-
-        const timer = setTimeout(() => {
-            if (!isDeleting) {
-                setCurrentText(word.substring(0, currentText.length + 1));
-                if (currentText.length === word.length) {
-                    setTimeout(() => setIsDeleting(true), 2000); 
-                }
-            } else {
-                setCurrentText(word.substring(0, currentText.length - 1));
-                if (currentText.length === 0) {
-                    setIsDeleting(false);
-                    setCurrentWordIndex((prev) => (prev + 1) % words.length);
-                }
-            }
-        }, typeSpeed);
-
-        return () => clearTimeout(timer);
-    }, [currentText, isDeleting, currentWordIndex, words]);
-
-    return (
-        <span className={className}>
-            {currentText}
-            <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity }}
-                className="inline-block w-1 h-[1em] bg-blue-500 ml-1 align-middle"
-            />
-        </span>
-    );
-};
-
-// Navigation
-const Navigation = () => {
-    const { theme, toggleTheme } = useTheme();
+// Navigation Bar
+const Navbar = () => {
+    const { theme, setMode } = useTheme();
     const { language, toggleLanguage, t } = useLanguage();
-    const [isScrolled, setIsScrolled] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 50);
+        const handleScroll = () => setScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const scrollToSection = (id) => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const scrollTo = (id) => {
+        const elem = document.getElementById(id);
+        if (elem) elem.scrollIntoView({ behavior: 'smooth' });
     };
 
     return (
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 dark:bg-pure-black/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10' : 'bg-transparent border-transparent'}`}>
-            <div className="max-w-7xl mx-auto px-6 py-4">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                        Mombo-Dingba Emmanuel
-                    </h1>
-
-                    <div className="flex items-center gap-6">
-                        <div className="hidden md:flex gap-6">
-                            {['about', 'projects', 'skills', 'timeline', 'contact'].map((item) => (
-                                <button
-                                    key={item}
-                                    onClick={() => scrollToSection(item)}
-                                    className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors font-medium text-sm uppercase tracking-wide relative group"
-                                >
-                                    {t(`nav.${item}`)}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all group-hover:w-full"></span>
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className="flex items-center gap-3 border-l border-gray-300 dark:border-white/20 pl-6">
-                            <button
-                                onClick={toggleTheme}
-                                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
-                            >
-                                {theme === 'dark' ? (
-                                    <Moon size={20} className="text-blue-400" />
-                                ) : (
-                                    <Sun size={20} className="text-yellow-500" />
-                                )}
-                            </button>
-
-                            <button
-                                onClick={toggleLanguage}
-                                className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 transition-all border border-gray-200 dark:border-white/10"
-                            >
-                                <Languages size={16} className="text-gray-700 dark:text-white" />
-                                <span className="text-sm font-semibold text-gray-900 dark:text-white uppercase">{language}</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    );
-};
-
-// Hero Section
-const Hero = () => {
-    const { t } = useLanguage();
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const y2 = useTransform(scrollY, [0, 500], [0, -150]);
-
-    const scrollToAbout = () => {
-        document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-    };
-
-    const roles = [
-        t('hero.role1'),
-        t('hero.role2'),
-        t('hero.role3')
-    ];
-
-    return (
-        <motion.section
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="min-h-screen flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden bg-gray-50 dark:bg-pure-black transition-colors duration-300"
+        <header
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+                    ? 'bg-canvas-light/95 dark:bg-canvas-dark/95 backdrop-blur-md border-b border-[#E9EDEF] dark:border-[#222E35] shadow-sm py-3'
+                    : 'bg-transparent py-5'
+                }`}
         >
-            {/* Background Component */}
-            <NeuralNetwork />
-
-            <motion.div style={{ y: y1 }} className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-white/80 to-purple-50/80 dark:hidden"></div>
-                <div className="absolute inset-0 bg-gradient-to-b from-pure-black/60 via-pure-black/70 to-pure-black hidden dark:block"></div>
-            </motion.div>
-
-            <motion.div style={{ y: y2 }} className="max-w-4xl w-full text-center relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.8 }}
-                    className="mb-8 relative"
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+                {/* Brand */}
+                <div
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="flex items-center gap-3 cursor-pointer group"
                 >
-                    <div className="absolute inset-0 w-40 h-40 mx-auto rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500 blur-xl opacity-40 dark:opacity-60 animate-pulse"></div>
-                    <div className="relative w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-white/50 dark:border-white/20 shadow-2xl">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-whatsapp-500 shadow-sm transition-transform group-hover:scale-105">
                         <img
                             src={profilMombo}
-                            alt="MOMBO DINGBA Emmanuel"
+                            alt="Emmanuel Mombo-Dingba"
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                                e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop";
-                            }}
+                            onError={(e) => { e.target.src = Mombo; }}
                         />
                     </div>
-                </motion.div>
-
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent drop-shadow-sm">
-                    MOMBO DINGBA Emmanuel
-                </h1>
-
-                <div className="h-12 mb-12">
-                    <TypewriterEffect
-                        words={roles}
-                        className="text-2xl md:text-3xl font-light text-gray-700 dark:text-blue-200"
-                    />
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-bold text-base sm:text-lg text-slateText-main dark:text-white tracking-tight">
+                                Emmanuel Mombo-Dingba
+                            </span>
+                            <span className="inline-block w-2.5 h-2.5 rounded-full bg-whatsapp-500 animate-pulse" title="AI Engineer @ HADRON S.A." />
+                        </div>
+                        <p className="text-xs text-slateText-muted dark:text-[#8696A0] font-medium hidden sm:block">
+                            AI Engineer @ HADRON S.A.
+                        </p>
+                    </div>
                 </div>
 
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={scrollToAbout}
-                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-full overflow-hidden shadow-xl shadow-blue-600/20"
-                >
-                    <span className="relative z-10 flex items-center gap-2">
-                        {t('hero.cta')} <ChevronDown className="animate-bounce" />
-                    </span>
-                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-                </motion.button>
-            </motion.div>
-        </motion.section>
+                {/* Nav Links */}
+                <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+                    {[
+                        { id: 'about', label: t('nav.about') },
+                        { id: 'experience', label: t('nav.experience') },
+                        { id: 'projects', label: t('nav.projects') },
+                        { id: 'skills', label: t('nav.skills') },
+                        { id: 'cv', label: t('nav.cv') },
+                        { id: 'contact', label: t('nav.contact') },
+                    ].map((link) => (
+                        <button
+                            key={link.id}
+                            onClick={() => scrollTo(link.id)}
+                            className="px-3 py-1.5 rounded-full text-sm font-medium text-slateText-muted hover:text-slateText-main dark:text-[#8696A0] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+                        >
+                            {link.label}
+                        </button>
+                    ))}
+                </nav>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2 sm:gap-3">
+                    {/* Language Switch */}
+                    <button
+                        onClick={toggleLanguage}
+                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-xs font-semibold uppercase tracking-wider text-slateText-main dark:text-white transition-all"
+                        title={t('nav.lang')}
+                    >
+                        <Languages size={14} />
+                        <span>{language}</span>
+                    </button>
+
+                    {/* Theme Segmented Toggle (Unambiguous: Sun = Light, Moon = Dark) */}
+                    <div className="flex items-center p-0.5 rounded-full bg-black/5 dark:bg-white/10 border border-black/5 dark:border-white/10">
+                        <button
+                            type="button"
+                            onClick={() => setMode('light')}
+                            className={`p-1.5 rounded-full transition-all flex items-center justify-center ${theme === 'light'
+                                    ? 'bg-white text-amber-500 shadow-sm'
+                                    : 'text-slateText-muted hover:text-slateText-main dark:text-white/40'
+                                }`}
+                            title="Mode Clair"
+                            aria-label="Mode Clair"
+                        >
+                            <Sun size={15} />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setMode('dark')}
+                            className={`p-1.5 rounded-full transition-all flex items-center justify-center ${theme === 'dark'
+                                    ? 'bg-[#1F2C34] text-whatsapp-400 shadow-sm'
+                                    : 'text-slateText-muted hover:text-slateText-main'
+                                }`}
+                            title="Mode Sombre"
+                            aria-label="Mode Sombre"
+                        >
+                            <Moon size={15} />
+                        </button>
+                    </div>
+
+                    {/* Direct CV Download CTA (WhatsApp-inspired pill button) */}
+                    <a
+                        href="/cv_mombo.pdf"
+                        download="Emmanuel_Mombo_Dingba_AI_Engineer_CV.pdf"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-whatsapp-500 hover:bg-whatsapp-600 text-white font-medium text-xs sm:text-sm shadow-sm transition-all hover:shadow hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                        <Download size={15} />
+                        <span className="hidden sm:inline">{t('nav.downloadCv')}</span>
+                        <span className="sm:hidden">CV</span>
+                    </a>
+                </div>
+            </div>
+        </header>
     );
 };
 
-// Company Logos (Auto-scroll Marquee)
-const CompanyLogos = () => {
-    const companies = [
-        { name: 'ENSPY', logo: '🎓' },
-        { name: 'Python', logo: '🐍' },
-        { name: 'React', logo: '⚛️' },
-        { name: 'Docker', logo: '🐳' },
-        { name: 'Kubernetes', logo: '☸️' },
-        { name: 'TensorFlow', logo: '🧠' },
-        { name: 'FastAPI', logo: '⚡' },
-        { name: 'Kafka', logo: '📊' }
-    ];
+// Hero Section (WhatsApp Landing Aesthetic)
+const Hero = () => {
+    const { t } = useLanguage();
+
+    const scrollToCv = () => {
+        document.getElementById('cv')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const scrollToProjects = () => {
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+    };
 
     return (
-        <div className="py-12 bg-gray-100 dark:bg-pure-black border-y border-gray-200 dark:border-white/10 overflow-hidden relative transition-colors duration-300">
-            <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-transparent to-gray-100 dark:from-pure-black dark:to-pure-black z-10 pointer-events-none"></div>
-            <div className="flex animate-marquee whitespace-nowrap gap-16 items-center hover:[animation-play-state:paused]">
-                {[...companies, ...companies, ...companies].map((company, idx) => (
-                    <div key={idx} className="flex flex-col items-center gap-3 group cursor-pointer transition-transform hover:scale-110">
-                        <span className="text-5xl filter grayscale group-hover:grayscale-0 transition-all duration-300 drop-shadow-lg">
-                            {company.logo}
-                        </span>
-                        <span className="text-xs text-gray-500 dark:text-white/40 font-mono group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors uppercase tracking-widest font-bold">
-                            {company.name}
-                        </span>
+        <section className="pt-24 sm:pt-28 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {/* Giant rounded hero container like WhatsApp's landing hero */}
+            <div className="relative rounded-[32px] sm:rounded-[40px] overflow-hidden bg-gradient-to-br from-[#0c3e37] via-[#0f4a42] to-[#123832] text-white p-6 sm:p-10 lg:p-14 shadow-soft-xl">
+                {/* Decorative background radial glows */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-whatsapp-500/15 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-80 h-80 bg-whatsapp-600/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                    {/* Left text column */}
+                    <div className="lg:col-span-7 space-y-6">
+                        {/* Status chip */}
+                        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-medium">
+                            <span className="w-2.5 h-2.5 rounded-full bg-whatsapp-400 animate-pulse" />
+                            <span>{t('hero.badge')}</span>
+                        </div>
+
+                        {/* Title */}
+                        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
+                            {t('hero.title')}
+                        </h1>
+
+                        {/* Subtitle */}
+                        <p className="text-base sm:text-lg text-white/85 max-w-xl font-normal leading-relaxed">
+                            {t('hero.subtitle')}
+                        </p>
+
+                        {/* CTAs */}
+                        <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-2">
+                            {/* Primary: Direct Download Button (like WhatsApp's "Télécharger ↓") */}
+                            <a
+                                href="/cv_mombo.pdf"
+                                download="Emmanuel_Mombo_Dingba_AI_Engineer_CV.pdf"
+                                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-whatsapp-500 hover:bg-whatsapp-400 text-slateText-main font-bold text-sm sm:text-base shadow-lg shadow-black/20 transition-all hover:scale-[1.03] active:scale-[0.98]"
+                            >
+                                <Download size={18} className="text-slateText-main" />
+                                <span>{t('hero.downloadCv')}</span>
+                            </a>
+
+                            {/* Secondary: WhatsApp Quick Chat */}
+                            <a
+                                href="https://wa.me/237653867570?text=Bonjour%20Emmanuel,%20j'ai%20consulte%20votre%20portfolio%20et%20souhaite%20echanger%20avec%20vous."
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-[#25D366]/20 hover:bg-[#25D366]/30 text-white font-semibold text-sm sm:text-base backdrop-blur-md border border-[#25D366]/40 transition-all hover:scale-[1.02]"
+                            >
+                                <MessageCircle size={18} className="text-[#25D366]" />
+                                <span>WhatsApp Direct</span>
+                            </a>
+
+                            {/* Link to CV Section */}
+                            <button
+                                onClick={scrollToCv}
+                                className="inline-flex items-center gap-1.5 px-4 py-3 text-sm text-white/80 hover:text-white transition-colors"
+                            >
+                                <QrCode size={16} />
+                                <span>{t('hero.viewCv')}</span>
+                            </button>
+                        </div>
+
+                        {/* Highlights row */}
+                        <div className="pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+                            <div>
+                                <div className="font-bold text-whatsapp-400 text-base sm:text-lg">HADRON S.A.</div>
+                                <div className="text-white/70">AI Engineer</div>
+                            </div>
+                            <div>
+                                <div className="font-bold text-whatsapp-400 text-base sm:text-lg">ENSPY 2026</div>
+                                <div className="text-white/70">Génie Informatique</div>
+                            </div>
+                            <div>
+                                <div className="font-bold text-whatsapp-400 text-base sm:text-lg">&lt; 300ms</div>
+                                <div className="text-white/70">Latence Multi-Agents</div>
+                            </div>
+                            <div>
+                                <div className="font-bold text-whatsapp-400 text-base sm:text-lg">99.2%</div>
+                                <div className="text-white/70">Validation Déterministe</div>
+                            </div>
+                        </div>
                     </div>
-                ))}
+
+                    {/* Right column: Image with floating chat pills like WhatsApp */}
+                    <div className="lg:col-span-5 relative flex justify-center">
+                        <div className="relative w-full max-w-[340px] sm:max-w-[380px] aspect-[4/5] rounded-[30px] overflow-hidden border-4 border-white/20 shadow-2xl bg-black/40">
+                            <img
+                                src={profilMombo}
+                                alt="Emmanuel Mombo-Dingba"
+                                className="w-full h-full object-cover object-top filter brightness-[1.02]"
+                                onError={(e) => { e.target.src = Mombo; }}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+
+                            <div className="absolute bottom-5 left-5 right-5 text-left">
+                                <div className="text-white font-bold text-lg">Emmanuel Mombo-Dingba</div>
+                                <div className="text-whatsapp-400 text-xs font-semibold">AI Engineer @ HADRON S.A.</div>
+                            </div>
+                        </div>
+
+                        {/* Floating Pill 1: Top Right */}
+                        <motion.div
+                            initial={{ y: 15, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.3, duration: 0.6 }}
+                            className="absolute -top-3 -right-2 sm:-right-4 bg-white dark:bg-canvas-darkElevated text-slateText-main dark:text-white px-3.5 py-2 rounded-2xl shadow-xl border border-black/5 dark:border-white/10 flex items-center gap-2 text-xs font-semibold"
+                        >
+                            <span className="w-2 h-2 rounded-full bg-whatsapp-500 animate-ping" />
+                            <span>{t('hero.chips.currentRole')}</span>
+                        </motion.div>
+
+                        {/* Floating Pill 2: Middle Left */}
+                        <motion.div
+                            initial={{ x: -15, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.5, duration: 0.6 }}
+                            className="absolute top-1/3 -left-3 sm:-left-6 bg-white dark:bg-canvas-darkElevated text-slateText-main dark:text-white px-3.5 py-2 rounded-2xl shadow-xl border border-black/5 dark:border-white/10 flex items-center gap-2 text-xs font-semibold"
+                        >
+                            <span>{t('hero.chips.multiAgent')}</span>
+                        </motion.div>
+
+                        {/* Floating Pill 3: Bottom Right */}
+                        <motion.div
+                            initial={{ y: 15, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.7, duration: 0.6 }}
+                            className="absolute -bottom-4 right-2 sm:right-6 bg-white dark:bg-canvas-darkElevated text-slateText-main dark:text-white px-3.5 py-2 rounded-2xl shadow-xl border border-black/5 dark:border-white/10 flex items-center gap-2 text-xs font-semibold"
+                        >
+                            <Sparkles size={14} className="text-whatsapp-600" />
+                            <span>{t('hero.chips.latency')}</span>
+                        </motion.div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     );
 };
 
@@ -241,475 +323,840 @@ const About = () => {
     const { t } = useLanguage();
 
     return (
-        <motion.section
-            id="about"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="min-h-screen flex items-center px-6 py-32 bg-white dark:bg-pure-black transition-colors duration-300 relative"
-        >
-            <div className="absolute right-0 top-20 w-1/3 h-1/3 bg-blue-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+        <section id="about" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+                {/* Left Card: Vision & Bio */}
+                <div className="lg:col-span-5 bg-white dark:bg-canvas-darkCard rounded-[32px] p-8 border border-[#E9EDEF] dark:border-[#222E35] shadow-soft">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-4">
+                        <Sparkles size={13} />
+                        <span>{t('about.badge')}</span>
+                    </div>
 
-            <div className="max-w-6xl mx-auto relative z-10 ">
-                <motion.h2
-                    initial={{ x: -50, opacity: 0 }}
-                    whileInView={{ x: 0, opacity: 1 }}
-                    className="text-5xl font-bold mb-16 text-gray-900 dark:text-white border-l-8 border-blue-600 pl-6"
-                >
-                    {t('about.title')}
-                </motion.h2>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slateText-main dark:text-white mb-4">
+                        {t('about.title')}
+                    </h2>
 
-                <div className="grid md:grid-cols-[350px,1fr] gap-16 items-center">
-                    <motion.div
-                        initial={{ opacity: 0, rotate: -5 }}
-                        whileInView={{ opacity: 1, rotate: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="w-full relative group"
-                    >
-                        <div className="absolute inset-0 bg-blue-600 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-300 opacity-20"></div>
-                        <div className="relative rounded-2xl overflow-hidden border-4 border-gray-200 dark:border-white/10 shadow-2xl">
-                            <img
-                                src= {Mombo}
-                                alt="MOMBO DINGBA Emmanuel"
-                                className="w-full h-auto object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
-                                onError={(e) => {
-                                    e.target.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop";
-                                }}
-                            />
+                    <div className="p-4 rounded-2xl bg-canvas-light dark:bg-canvas-darkElevated border-l-4 border-whatsapp-500 text-sm font-medium italic text-slateText-main dark:text-white mb-6">
+                        "{t('about.quote')}"
+                    </div>
+
+                    <div className="space-y-3 text-xs sm:text-sm text-slateText-muted dark:text-[#8696A0] font-medium">
+                        <div className="flex items-center gap-2.5">
+                            <CheckCircle2 size={16} className="text-whatsapp-600 dark:text-whatsapp-400 shrink-0" />
+                            <span>Diplômé Ingénieur en Génie Informatique (ENSPY)</span>
                         </div>
-                    </motion.div>
+                        <div className="flex items-center gap-2.5">
+                            <CheckCircle2 size={16} className="text-whatsapp-600 dark:text-whatsapp-400 shrink-0" />
+                            <span>AI Engineer chez HADRON S.A.</span>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                            <CheckCircle2 size={16} className="text-whatsapp-600 dark:text-whatsapp-400 shrink-0" />
+                            <span>Double culture Mathématiques Pures & IA de Production</span>
+                        </div>
+                    </div>
+                </div>
 
-                    <div className="space-y-8 text-lg text-gray-600 dark:text-gray-300 leading-relaxed font-light">
-                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>{t('about.p1')}</motion.p>
-                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>{t('about.p2')}</motion.p>
-                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="p-6 bg-blue-50 dark:bg-white/5 border-l-4 border-blue-500 rounded-r-xl italic">
-                            "{t('about.p3')}"
-                        </motion.p>
+                {/* Right text narrative */}
+                <div className="lg:col-span-7 bg-white dark:bg-canvas-darkCard rounded-[32px] p-8 sm:p-10 border border-[#E9EDEF] dark:border-[#222E35] shadow-soft space-y-5 text-sm sm:text-base text-slateText-muted dark:text-[#8696A0] leading-relaxed">
+                    <p className="text-slateText-main dark:text-white font-medium">
+                        {t('about.p1')}
+                    </p>
+                    <p>
+                        {t('about.p2')}
+                    </p>
+                    <p>
+                        {t('about.p3')}
+                    </p>
+
+                    <div className="pt-4 flex flex-wrap gap-2">
+                        {['Python', 'Multi-Agent Systems', 'LangGraph', 'LLMs & RAG', 'FastAPI', 'Redis Streams', 'PostgreSQL', 'Docker'].map((tag) => (
+                            <span
+                                key={tag}
+                                className="px-3 py-1 rounded-full text-xs font-semibold bg-canvas-light dark:bg-canvas-darkElevated text-slateText-main dark:text-white border border-[#E9EDEF] dark:border-[#222E35]"
+                            >
+                                {tag}
+                            </span>
+                        ))}
                     </div>
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 };
 
-// Spotlight Card Component (inline for simplicity or import)
-const SpotlightCard = ({ children, className = "" }) => {
-    const divRef = useRef(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [opacity, setOpacity] = useState(0);
+// Experience Section (Featuring HADRON S.A. prominently & Architecture Breakdown)
+const Experience = () => {
+    const { t } = useLanguage();
 
-    const handleMouseMove = (e) => {
-        if (!divRef.current) return;
-        const rect = divRef.current.getBoundingClientRect();
-        setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+    return (
+        <section id="experience" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="mb-10 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-3">
+                    <Briefcase size={14} />
+                    <span>{t('experience.title')}</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slateText-main dark:text-white">
+                    {t('experience.subtitle')}
+                </h2>
+            </div>
+
+            <div className="space-y-8">
+                {/* 1. HADRON S.A. (AI Engineer - CURRENT ROLE) */}
+                <div className="relative rounded-[32px] bg-white dark:bg-canvas-darkCard border-2 border-whatsapp-500/40 p-6 sm:p-10 shadow-soft-xl overflow-hidden">
+                    {/* Active role badge ribbon */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                        <div className="flex flex-wrap items-baseline gap-3">
+                            <h3 className="text-2xl sm:text-3xl font-extrabold text-slateText-main dark:text-white">
+                                {t('experience.hadron.role')}
+                            </h3>
+                            <span className="text-lg font-bold text-whatsapp-600 dark:text-whatsapp-400">
+                                · {t('experience.hadron.company')}
+                            </span>
+                        </div>
+
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-whatsapp-500 text-white font-bold text-xs uppercase tracking-wider shadow-sm">
+                            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                            {t('experience.currentBadge')}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 text-xs font-semibold text-slateText-muted dark:text-[#8696A0] mb-6">
+                        <span className="flex items-center gap-1">
+                            <MapPin size={13} /> {t('experience.hadron.location')}
+                        </span>
+                        <span>|</span>
+                        <span>{t('experience.hadron.period')}</span>
+                    </div>
+
+                    <p className="text-sm sm:text-base text-slateText-main dark:text-white/90 mb-6 font-medium leading-relaxed">
+                        {t('experience.hadron.desc')}
+                    </p>
+
+                    {/* Architecture Workflow Strip (Makes it deeply "parlant") */}
+                    <div className="my-6 p-5 rounded-2xl bg-canvas-light dark:bg-canvas-darkElevated border border-[#E9EDEF] dark:border-[#222E35]">
+                        <div className="text-xs font-bold uppercase tracking-wider text-whatsapp-700 dark:text-whatsapp-400 mb-3 flex items-center gap-2">
+                            <Cpu size={14} />
+                            <span>Architecture Déployée : Autonomous Agentic ERP Bridge</span>
+                        </div>
+                        <div className="grid sm:grid-cols-4 gap-3 text-xs">
+                            <div className="p-3 rounded-xl bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35]">
+                                <span className="text-whatsapp-500 font-bold block mb-1">01. Flux Événements</span>
+                                <span className="text-slateText-muted dark:text-[#8696A0]">ERP Logs, Inventory, Anomalies</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35]">
+                                <span className="text-whatsapp-500 font-bold block mb-1">02. Streaming</span>
+                                <span className="text-slateText-muted dark:text-[#8696A0]">Redis Streams haute fréquence</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35]">
+                                <span className="text-whatsapp-500 font-bold block mb-1">03. Agents IA</span>
+                                <span className="text-slateText-muted dark:text-[#8696A0]">LangGraph + LLM Contextuel</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35]">
+                                <span className="text-whatsapp-500 font-bold block mb-1">04. Validation & Act</span>
+                                <span className="text-slateText-muted dark:text-[#8696A0]">Guardrails Pydantic (99.2%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3 mb-6">
+                        {t('experience.hadron.points').map((point, idx) => (
+                            <div key={idx} className="flex items-start gap-3 text-sm text-slateText-muted dark:text-[#8696A0]">
+                                <div className="mt-1 w-2 h-2 rounded-full bg-whatsapp-500 shrink-0" />
+                                <span>{point}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-[#E9EDEF] dark:border-[#222E35]">
+                        {t('experience.hadron.tags').map((tech) => (
+                            <span
+                                key={tech}
+                                className="px-3 py-1 rounded-full text-xs font-semibold bg-whatsapp-500/10 text-whatsapp-800 dark:text-whatsapp-300 border border-whatsapp-500/20"
+                            >
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                {/* 2. ENSPY (Software Engineering Intern) */}
+                <div className="rounded-[32px] bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35] p-6 sm:p-10 shadow-soft">
+                    <div className="flex flex-wrap items-baseline gap-3 mb-2">
+                        <h3 className="text-xl sm:text-2xl font-bold text-slateText-main dark:text-white">
+                            {t('experience.enspy.role')}
+                        </h3>
+                        <span className="text-base font-semibold text-slateText-muted dark:text-[#8696A0]">
+                            · {t('experience.enspy.company')}
+                        </span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4 text-xs font-semibold text-slateText-muted dark:text-[#8696A0] mb-5">
+                        <span className="flex items-center gap-1">
+                            <MapPin size={13} /> {t('experience.enspy.location')}
+                        </span>
+                        <span>|</span>
+                        <span>{t('experience.enspy.period')}</span>
+                    </div>
+
+                    <p className="text-sm text-slateText-muted dark:text-[#8696A0] mb-5 leading-relaxed">
+                        {t('experience.enspy.desc')}
+                    </p>
+
+                    <div className="space-y-2.5 mb-6">
+                        {t('experience.enspy.points').map((point, idx) => (
+                            <div key={idx} className="flex items-start gap-3 text-sm text-slateText-muted dark:text-[#8696A0]">
+                                <div className="mt-1 w-2 h-2 rounded-full bg-slateText-muted dark:bg-[#8696A0] shrink-0" />
+                                <span>{point}</span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-[#E9EDEF] dark:border-[#222E35]">
+                        {t('experience.enspy.tags').map((tech) => (
+                            <span
+                                key={tech}
+                                className="px-3 py-1 rounded-full text-xs font-semibold bg-canvas-light dark:bg-canvas-darkElevated text-slateText-main dark:text-white border border-[#E9EDEF] dark:border-[#222E35]"
+                            >
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+// CV Download & QR Code Section (Core user requirement with Interactive Tabbed Dossier)
+const CvSection = () => {
+    const { t } = useLanguage();
+    const [copied, setCopied] = useState(false);
+    const [activeCvTab, setActiveCvTab] = useState('summary');
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText('https://mombo-dingba.github.io/');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
     };
 
     return (
-        <div
-            ref={divRef}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setOpacity(1)}
-            onMouseLeave={() => setOpacity(0)}
-            className={`relative overflow-hidden ${className}`}
-        >
-            <div
-                className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 z-10"
-                style={{
-                    opacity,
-                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(59, 130, 246, 0.15), transparent 40%)`,
-                }}
-            />
-            {children}
-        </div>
+        <section id="cv" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="rounded-[36px] bg-gradient-to-br from-white via-white to-canvas-light dark:from-canvas-darkCard dark:via-canvas-darkCard dark:to-canvas-darkElevated border border-[#E9EDEF] dark:border-[#222E35] p-6 sm:p-10 lg:p-12 shadow-soft-xl">
+                <div className="grid lg:grid-cols-12 gap-8 items-center">
+                    {/* Left: Info & Interactive CV Preview Tabs */}
+                    <div className="lg:col-span-7 space-y-6">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider">
+                            <FileText size={14} />
+                            <span>{t('cvSection.badge')}</span>
+                        </div>
+
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-slateText-main dark:text-white">
+                            {t('cvSection.title')}
+                        </h2>
+
+                        <p className="text-sm sm:text-base text-slateText-muted dark:text-[#8696A0] leading-relaxed">
+                            {t('cvSection.subtitle')}
+                        </p>
+
+                        {/* Interactive Tabbed Mini-Reader */}
+                        <div className="rounded-2xl border border-[#E9EDEF] dark:border-[#222E35] bg-canvas-light dark:bg-canvas-darkElevated overflow-hidden">
+                            <div className="flex border-b border-[#E9EDEF] dark:border-[#222E35] bg-white/50 dark:bg-black/20 text-xs font-semibold">
+                                {[
+                                    { id: 'summary', label: 'Profil' },
+                                    { id: 'hadron', label: 'HADRON S.A.' },
+                                    { id: 'edu', label: 'Formation' },
+                                    { id: 'skills', label: 'Compétences' }
+                                ].map(tab => (
+                                    <button
+                                        key={tab.id}
+                                        onClick={() => setActiveCvTab(tab.id)}
+                                        className={`flex-1 py-2.5 text-center transition-colors ${activeCvTab === tab.id
+                                                ? 'bg-whatsapp-500 text-white font-bold'
+                                                : 'text-slateText-muted dark:text-[#8696A0] hover:text-slateText-main dark:hover:text-white'
+                                            }`}
+                                    >
+                                        {tab.label}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="p-4 text-xs sm:text-sm text-slateText-main dark:text-[#E9EDEF] leading-relaxed">
+                                {activeCvTab === 'summary' && (
+                                    <p>
+                                        <strong>Emmanuel Mombo-Dingba</strong> — AI Engineer chez HADRON S.A. et diplômé Ingénieur en Génie Informatique (ENSPY). Expert en systèmes multi-agents, assistants LLM d'entreprise et architectures distribuées hautement fiables.
+                                    </p>
+                                )}
+                                {activeCvTab === 'hadron' && (
+                                    <p>
+                                        <strong>Poste Actuel : AI Engineer @ HADRON S.A. (2026 – Présent)</strong><br />
+                                        Conception de l'architecture d'intégration IA ↔ ERP, orchestration multi-agents (LangGraph, FastAPI), pipelines Redis Streams et guardrails déterministes (latence &lt; 300ms, validation 99.2%).
+                                    </p>
+                                )}
+                                {activeCvTab === 'edu' && (
+                                    <p>
+                                        <strong>Formation Académique d'Excellence :</strong><br />
+                                        • Diplôme d'Ingénieur Génie Informatique (ENSPY 2021 – 2026)<br />
+                                        • Mathématiques Pures (Université de Ngaoundéré 2019 – 2021)<br />
+                                        • Stanford Online (CS229, CS231n, CS224n)
+                                    </p>
+                                )}
+                                {activeCvTab === 'skills' && (
+                                    <p>
+                                        <strong>Arsenal Technique :</strong><br />
+                                        Python, FastAPI, Redis Streams, Kafka, PostgreSQL, Docker, Multi-Agent Systems, LangGraph, LLMs, NLP, RAG, PyTorch, React, WebRTC.
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex flex-wrap items-center gap-3 pt-2">
+                            {/* Download PDF button (EN) */}
+                            <a
+                                href="/cv_mombo.pdf"
+                                download="Emmanuel_Mombo_Dingba_AI_Engineer_CV.pdf"
+                                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-whatsapp-500 hover:bg-whatsapp-600 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                title="Télécharger le CV au format PDF (International / Anglais)"
+                            >
+                                <Download size={16} />
+                                <span>{t('cvSection.downloadBtn')} (EN)</span>
+                            </a>
+
+                            {/* Download PDF button (FR) */}
+                            <a
+                                href="/Emmanuel_Mombo_Dingba_CV_FR.pdf"
+                                download="Emmanuel_Mombo_Dingba_CV_FR.pdf"
+                                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-full bg-whatsapp-700 hover:bg-whatsapp-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                title="Télécharger le CV au format PDF (Version Française)"
+                            >
+                                <Download size={16} />
+                                <span>Télécharger (FR)</span>
+                            </a>
+
+                            {/* Open in new tab */}
+                            <a
+                                href="/cv.html"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-4 py-3.5 rounded-full bg-canvas-light hover:bg-[#E9EDEF] dark:bg-canvas-darkElevated dark:hover:bg-[#202C33] text-slateText-main dark:text-white font-semibold text-xs sm:text-sm border border-[#E9EDEF] dark:border-[#222E35] transition-all"
+                            >
+                                <ExternalLink size={15} />
+                                <span>{t('cvSection.openBtn')}</span>
+                            </a>
+
+                            {/* Print preview */}
+                            <button
+                                onClick={() => {
+                                    const win = window.open('/cv.html', '_blank');
+                                    if (win) {
+                                        win.focus();
+                                        setTimeout(() => win.print(), 500);
+                                    }
+                                }}
+                                className="inline-flex items-center gap-1.5 px-3 py-3.5 rounded-full text-slateText-muted hover:text-slateText-main dark:text-[#8696A0] dark:hover:text-white font-medium text-xs sm:text-sm transition-colors"
+                            >
+                                <Printer size={15} />
+                                <span>{t('cvSection.printBtn')}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Right: Dedicated QR Code Box with live copy link */}
+                    <div className="lg:col-span-5 flex justify-center">
+                        <div className="w-full max-w-sm rounded-[32px] bg-white dark:bg-canvas-darkElevated border border-[#E9EDEF] dark:border-[#222E35] p-6 sm:p-8 text-center shadow-soft">
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-4">
+                                <QrCode size={14} />
+                                <span>{t('cvSection.qrBadge')}</span>
+                            </div>
+
+                            {/* QR Code Graphic */}
+                            <div className="mx-auto w-48 h-48 sm:w-52 sm:h-52 p-3 bg-white rounded-2xl shadow-inner border border-gray-200 flex items-center justify-center">
+                                <img
+                                    src="/qr-portfolio.png"
+                                    alt="QR Code Portfolio"
+                                    className="w-full h-full object-contain"
+                                    onError={(e) => {
+                                        e.target.src = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://mombo-dingba.github.io/";
+                                    }}
+                                />
+                            </div>
+
+                            <h3 className="font-bold text-base text-slateText-main dark:text-white mt-4 mb-1">
+                                {t('cvSection.scanTitle')}
+                            </h3>
+                            <p className="text-xs text-slateText-muted dark:text-[#8696A0] leading-relaxed mb-4">
+                                {t('cvSection.scanDesc')}
+                            </p>
+
+                            {/* Copy Link Button with Toast */}
+                            <button
+                                onClick={handleCopy}
+                                className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-canvas-light dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35] text-xs font-semibold text-slateText-main dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
+                            >
+                                {copied ? (
+                                    <>
+                                        <Check size={14} className="text-whatsapp-500" />
+                                        <span className="text-whatsapp-600 dark:text-whatsapp-400 font-bold">Lien copié dans le presse-papier !</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Copy size={14} />
+                                        <span>Copier l'URL du portfolio</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     );
 };
 
-// Project Modal (Case Study style)
-const ProjectModal = ({ project, onClose }) => {
-    const { t } = useLanguage();
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-xl"
-            onClick={onClose}
-        >
-            <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 50 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 50 }}
-                className="bg-white dark:bg-[#0A0A0A] border border-gray-200 dark:border-white/10 rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative flex flex-col transition-colors duration-300"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Header Image */}
-                <div className="relative h-64 md:h-96 shrink-0">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/20 to-transparent" />
-                    <div className="absolute bottom-8 left-8 right-8">
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            {project.technologies.map(tech => (
-                                <span key={tech} className="px-3 py-1 bg-blue-600/20 backdrop-blur-md border border-blue-500/30 text-blue-400 text-xs font-bold rounded-full uppercase tracking-tighter">
-                                    {tech}
-                                </span>
-                            ))}
-                        </div>
-                        <h3 className="text-4xl md:text-6xl font-black text-white leading-none whitespace-pre-line">
-                            {project.title}
-                        </h3>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className="absolute top-6 right-6 p-3 bg-black/40 hover:bg-white/10 rounded-full text-white transition-all hover:rotate-90"
-                    >
-                        <X size={24} />
-                    </button>
-                </div>
-
-                {/* Content Area */}
-                <div className="flex-1 overflow-y-auto p-8 md:p-12">
-                    <div className="grid md:grid-cols-[2fr,1fr] gap-12">
-                        <div className="space-y-10">
-                            <section>
-                                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-blue-600 mb-4">{t('projects.caseStudy.overview') || 'Aperçu du Projet'}</h4>
-                                <p className="text-xl md:text-2xl leading-relaxed text-gray-700 dark:text-gray-300 font-light italic">
-                                    {project.fullDesc}
-                                </p>
-                            </section>
-
-                            <section className="grid md:grid-cols-2 gap-8">
-                                <div className="p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
-                                    <h5 className="font-bold text-gray-900 dark:text-white mb-2">Challenge</h5>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                        Conception d'une architecture capable de gérer des flux de données complexes avec une latence minimale tout en assurant une haute disponibilité.
-                                    </p>
-                                </div>
-                                <div className="p-6 bg-blue-600/5 rounded-2xl border border-blue-600/20">
-                                    <h5 className="font-bold text-blue-600 dark:text-blue-400 mb-2">Solution</h5>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                        Mise en œuvre de patterns asynchrones et de caching distribué pour optimiser les performances de bout en bout.
-                                    </p>
-                                </div>
-                            </section>
-                        </div>
-
-                        <div className="space-y-8">
-                            <div>
-                                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-purple-600 mb-4">{t('projects.techDetails') || 'Détails Techniques'}</h4>
-                                <ul className="space-y-4">
-                                    {project.details && project.details.map((detail, idx) => (
-                                        <li key={idx} className="flex items-start gap-4 text-gray-600 dark:text-gray-400 text-sm">
-                                            <div className="mt-1 w-2 h-2 rounded-full bg-purple-500 shrink-0 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
-                                            <span>{detail}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div className="pt-8 border-t border-gray-100 dark:border-white/10">
-                                <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-black rounded-xl shadow-lg shadow-blue-600/20 hover:scale-[1.02] transition-transform">
-                                    {t('projects.viewDemo') || 'VOIR LA DÉMO LIVE'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        </motion.div>
-    );
-};
-
-// Projects Grid
+// Selected Projects Section
 const Projects = () => {
-    const [selectedProject, setSelectedProject] = useState(null);
     const { t } = useLanguage();
+    const [selectedProject, setSelectedProject] = useState(null);
 
-    // Reconstruct projects array from translation keys
-    const projects = [
+    const projectsList = [
         {
-            title: t('projects.p1.title') === 'projects.p1.title' ? "Distributed AI System" : t('projects.p1.title'),
-            description: t('projects.p1.desc') === 'projects.p1.desc' ? "High scale event processing" : t('projects.p1.desc'),
-            fullDesc: t('projects.p1.fullDesc'),
-            technologies: ['FastAPI', 'Kafka', 'Redis', 'LangGraph', 'Pydantic'],
-            image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop',
-            details: ["Event driven architecture", "Sub-millisecond latency", "Horizontal scaling"]
+            key: 'p1',
+            badge: t('projects.p1.badge'),
+            title: t('projects.p1.title'),
+            desc: t('projects.p1.desc'),
+            points: t('projects.p1.points'),
+            tech: t('projects.p1.tech'),
+            icon: Bot,
+            org: "HADRON S.A."
         },
         {
-            title: t('projects.p2.title') === 'projects.p2.title' ? "Real-time Chat" : t('projects.p2.title'),
-            description: t('projects.p2.desc'),
-            fullDesc: t('projects.p2.fullDesc'),
-            technologies: ['WebRTC', 'WebSocket', 'React', 'Node.js'],
-            image: 'https://images.unsplash.com/photo-1611746872915-64382b5c76da?w=800&h=400&fit=crop',
-            details: ["P2P Video Streaming", "Socket.io clustering", "Encryption at rest"]
+            key: 'p2',
+            badge: t('projects.p2.badge'),
+            title: t('projects.p2.title'),
+            desc: t('projects.p2.desc'),
+            points: t('projects.p2.points'),
+            tech: t('projects.p2.tech'),
+            icon: Activity,
+            org: "Laboratoire ENSPY"
+        },
+        {
+            key: 'p3',
+            badge: t('projects.p3.badge'),
+            title: t('projects.p3.title'),
+            desc: t('projects.p3.desc'),
+            points: t('projects.p3.points'),
+            tech: t('projects.p3.tech'),
+            icon: Cpu,
+            org: "Projet Recherche ML"
+        },
+        {
+            key: 'p4',
+            badge: t('projects.p4.badge'),
+            title: t('projects.p4.title'),
+            desc: t('projects.p4.desc'),
+            points: t('projects.p4.points'),
+            tech: t('projects.p4.tech'),
+            icon: Layers,
+            org: "Impact Afrique"
         }
     ];
 
     return (
-        <>
-            <section
-                id="projects"
-                className="px-6 py-32 relative bg-gray-50 dark:bg-pure-black transition-colors duration-300"
-            >
-                <div className="absolute left-0 top-1/4 w-1/2 h-1/2 bg-purple-500/5 blur-[150px] pointer-events-none"></div>
-
-                <div className="max-w-6xl mx-auto relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="mb-16 text-center"
-                    >
-                        <h2 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent inline-block">
-                            {t('projects.title')}
-                        </h2>
-                        <p className="text-xl text-gray-600 dark:text-white/60 max-w-2xl mx-auto">{t('projects.subtitle')}</p>
-                    </motion.div>
-
-                    <div className="grid md:grid-cols-2 gap-10">
-                        {projects.map((project, idx) => (
-                            <div key={idx} className="h-[400px]">
-                                <ProjectCard3D
-                                    project={project}
-                                    t={t}
-                                    onClick={() => setSelectedProject(project)}
-                                />
-                            </div>
-                        ))}
-                    </div>
+        <section id="projects" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="mb-10 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-3">
+                    <Code2 size={14} />
+                    <span>{t('projects.title')}</span>
                 </div>
-            </section>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slateText-main dark:text-white">
+                    {t('projects.subtitle')}
+                </h2>
+            </div>
 
+            <div className="grid md:grid-cols-2 gap-8">
+                {projectsList.map((p) => {
+                    const IconComponent = p.icon;
+                    return (
+                        <div
+                            key={p.key}
+                            onClick={() => setSelectedProject(p)}
+                            className="group cursor-pointer rounded-[32px] bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35] p-6 sm:p-8 shadow-soft flex flex-col justify-between hover:shadow-soft-xl hover:border-whatsapp-500/40 transition-all"
+                        >
+                            <div>
+                                <div className="flex items-center justify-between mb-4">
+                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-canvas-light dark:bg-canvas-darkElevated text-whatsapp-700 dark:text-whatsapp-400 border border-[#E9EDEF] dark:border-[#222E35]">
+                                        {p.badge}
+                                    </span>
+                                    <div className="w-10 h-10 rounded-full bg-whatsapp-500/10 flex items-center justify-center text-whatsapp-600 dark:text-whatsapp-400 group-hover:scale-110 transition-transform">
+                                        <IconComponent size={20} />
+                                    </div>
+                                </div>
+
+                                <h3 className="text-xl sm:text-2xl font-bold text-slateText-main dark:text-white mb-2 group-hover:text-whatsapp-600 dark:group-hover:text-whatsapp-400 transition-colors">
+                                    {p.title}
+                                </h3>
+
+                                <p className="text-xs font-semibold text-whatsapp-700 dark:text-whatsapp-300 mb-3">
+                                    {p.org}
+                                </p>
+
+                                <p className="text-sm text-slateText-muted dark:text-[#8696A0] mb-4 leading-relaxed font-normal">
+                                    {p.desc}
+                                </p>
+
+                                <div className="space-y-2 mb-6">
+                                    {p.points.map((pt, i) => (
+                                        <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slateText-muted dark:text-[#8696A0]">
+                                            <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-whatsapp-500 shrink-0" />
+                                            <span>{pt}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-[#E9EDEF] dark:border-[#222E35]">
+                                <div className="flex flex-wrap gap-1.5">
+                                    {p.tech.slice(0, 4).map((tItem) => (
+                                        <span
+                                            key={tItem}
+                                            className="px-2.5 py-1 rounded-full text-xs font-medium bg-canvas-light dark:bg-canvas-darkElevated text-slateText-main dark:text-white"
+                                        >
+                                            {tItem}
+                                        </span>
+                                    ))}
+                                </div>
+                                <span className="text-xs font-bold text-whatsapp-600 dark:text-whatsapp-400 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                    Détails <ChevronRight size={14} />
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Case Study Modal */}
             <AnimatePresence>
                 {selectedProject && (
-                    <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedProject(null)}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-full max-w-2xl bg-white dark:bg-canvas-darkCard rounded-[32px] p-6 sm:p-8 shadow-2xl border border-[#E9EDEF] dark:border-[#222E35] space-y-6"
+                        >
+                            <div className="flex items-start justify-between">
+                                <div>
+                                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400">
+                                        {selectedProject.badge} · {selectedProject.org}
+                                    </span>
+                                    <h3 className="text-2xl font-extrabold text-slateText-main dark:text-white mt-2">
+                                        {selectedProject.title}
+                                    </h3>
+                                </div>
+                                <button
+                                    onClick={() => setSelectedProject(null)}
+                                    className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slateText-muted dark:text-white"
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            <p className="text-sm sm:text-base text-slateText-main dark:text-white/90 leading-relaxed">
+                                {selectedProject.desc}
+                            </p>
+
+                            <div className="space-y-3 p-4 rounded-2xl bg-canvas-light dark:bg-canvas-darkElevated">
+                                <span className="font-bold text-xs uppercase tracking-wider text-whatsapp-700 dark:text-whatsapp-400">
+                                    Points clés de réalisation :
+                                </span>
+                                {selectedProject.points.map((pt, i) => (
+                                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slateText-muted dark:text-[#8696A0]">
+                                        <CheckCircle2 size={16} className="text-whatsapp-500 shrink-0 mt-0.5" />
+                                        <span>{pt}</span>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div>
+                                <span className="text-xs font-bold text-slateText-muted dark:text-[#8696A0] block mb-2">Technologies utilisées :</span>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedProject.tech.map((tItem) => (
+                                        <span
+                                            key={tItem}
+                                            className="px-3 py-1 rounded-full text-xs font-semibold bg-whatsapp-500/10 text-whatsapp-800 dark:text-whatsapp-300 border border-whatsapp-500/20"
+                                        >
+                                            {tItem}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
                 )}
             </AnimatePresence>
-        </>
+        </section>
     );
 };
 
-// Skills Section
+// Technical Arsenal / Skills Section
 const Skills = () => {
     const { t } = useLanguage();
 
-    const allSkills = [
-        'Python', 'FastAPI', 'Node.js', 'React', 'TypeScript', 'JavaScript',
-        'LangGraph', 'LangChain', 'Pydantic', 'OpenAI API', 'Hugging Face',
-        'Docker', 'Kubernetes', 'Kafka', 'Redis', 'PostgreSQL', 'MongoDB',
-        'TensorFlow', 'PyTorch', 'Scikit-learn', 'Pandas', 'NumPy'
-    ];
-
-    return (
-        <section
-            id="skills"
-            className="px-6 py-32 relative overflow-hidden bg-white dark:bg-pure-black transition-colors duration-300"
-        >
-            <div className="max-w-6xl mx-auto relative z-10">
-                <h2 className="text-5xl md:text-6xl font-bold mb-16 text-center bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
-                    {t('skills.title')}
-                </h2>
-
-                <div className="flex flex-col items-center">
-                    <TechOrbit skills={allSkills} />
-
-                    <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 w-full">
-                        {['core', 'ai', 'infra', 'ml'].map((cat) => (
-                            <div key={cat} className="text-center p-6 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
-                                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-widest text-blue-600">
-                                    {t(`skills.categories.${cat}`)}
-                                </h3>
-                                <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-};
-
-// Timeline
-const Timeline = () => {
-    const { t } = useLanguage();
-    // Simplified for updating loop
-    const experiences = [
+    const categories = [
         {
-            period: '2021-2026',
-            title: t('timeline.exp1.title'),
-            organization: t('timeline.exp1.org'),
-            location: 'Yaoundé, Cameroun',
-            description: t('timeline.exp1.desc'),
-            logo: logoEnspy,
-            logoFallback: '🎓'
+            title: t('skills.cat1.title'),
+            desc: t('skills.cat1.desc'),
+            items: t('skills.cat1.items'),
+            icon: Bot
         },
         {
-            period: '2025',
-            title: t('timeline.exp2.title'),
-            organization: t('timeline.exp2.org'),
-            description: t('timeline.exp2.desc'),
-            logo: logoEnspy, // Assuming the internship was also associated or used generic logic
-            logoFallback: '💼'
-        },
-        // ... (truncated for brevity, would include all)
-        {
-            period: '2024',
-            title: t('timeline.exp3.title'),
-            organization: t('timeline.exp3.org'),
-            description: t('timeline.exp3.desc'),
-            logo: logoStanford,
-            logoFallback: '📜'
+            title: t('skills.cat2.title'),
+            desc: t('skills.cat2.desc'),
+            items: t('skills.cat2.items'),
+            icon: Server
         },
         {
-            period: '2019-2021',
-            title: t('timeline.exp4.title'),
-            organization: t('timeline.exp4.org'),
-            location: 'Ngaoundéré, Cameroun',
-            description: t('timeline.exp4.desc'),
-            logo: logoNgaoundere,
-            logoFallback: '🎓'
+            title: t('skills.cat3.title'),
+            desc: t('skills.cat3.desc'),
+            items: t('skills.cat3.items'),
+            icon: Database
+        },
+        {
+            title: t('skills.cat4.title'),
+            desc: t('skills.cat4.desc'),
+            items: t('skills.cat4.items'),
+            icon: Code2
         }
     ];
 
     return (
-        <section
-            id="timeline"
-            className="relative bg-gray-50 dark:bg-[#050505] transition-colors duration-300"
-        >
-            <div className="py-20 text-center">
-                <h2 className="text-5xl md:text-6xl font-bold mb-16 text-center text-gray-900 dark:text-white">{t('timeline.title')}</h2>
+        <section id="skills" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="mb-10 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-3">
+                    <Cpu size={14} />
+                    <span>{t('skills.title')}</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slateText-main dark:text-white">
+                    {t('skills.subtitle')}
+                </h2>
             </div>
 
-            <ScrollTimeline experiences={experiences} t={t} />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {categories.map((cat, idx) => {
+                    const CatIcon = cat.icon;
+                    return (
+                        <div
+                            key={idx}
+                            className="rounded-[28px] bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35] p-6 shadow-soft flex flex-col justify-between"
+                        >
+                            <div>
+                                <div className="w-10 h-10 rounded-2xl bg-whatsapp-500/10 text-whatsapp-600 dark:text-whatsapp-400 flex items-center justify-center mb-4">
+                                    <CatIcon size={20} />
+                                </div>
+                                <h3 className="font-bold text-lg text-slateText-main dark:text-white mb-2">
+                                    {cat.title}
+                                </h3>
+                                <p className="text-xs text-slateText-muted dark:text-[#8696A0] mb-4">
+                                    {cat.desc}
+                                </p>
+                            </div>
+
+                            <div className="flex flex-wrap gap-1.5 pt-4 border-t border-[#E9EDEF] dark:border-[#222E35]">
+                                {cat.items.map((skill, sIdx) => (
+                                    <span
+                                        key={sIdx}
+                                        className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-canvas-light dark:bg-canvas-darkElevated text-slateText-main dark:text-white border border-[#E9EDEF] dark:border-[#222E35]"
+                                    >
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
         </section>
     );
 };
 
-// Additional Activities
-const AdditionalActivities = () => {
+// Education Section
+const Education = () => {
     const { t } = useLanguage();
+    const logos = [logoEnspy, logoNgaoundere, logoStanford];
 
     return (
-        <motion.section
-            className="py-32 relative overflow-hidden bg-gray-50 dark:bg-pure-black transition-colors duration-300"
-        >
-            <div className="max-w-6xl mx-auto px-6 relative z-10">
-                <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center text-gray-900 dark:text-white">
-                    {t('activities.title')}
-                </h2>
-
-                <div className="grid md:grid-cols-4 gap-6">
-                    {[
-                        { title: t('activities.items.formations.title'), desc: t('activities.items.formations.desc'), icon: '📚', color: 'bg-blue-500' },
-                        { title: t('activities.items.opensource.title'), desc: t('activities.items.opensource.desc'), icon: '🌐', color: 'bg-purple-500' },
-                        { title: t('activities.items.mentorat.title'), desc: t('activities.items.mentorat.desc'), icon: '👨‍🏫', color: 'bg-indigo-500' },
-                        { title: t('activities.items.veille.title'), desc: t('activities.items.veille.desc'), icon: '🔍', color: 'bg-pink-500' }
-                    ].map((item, idx) => (
-                        <motion.div
-                            key={idx}
-                            whileHover={{ y: -5 }}
-                            className="bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 p-6 rounded-2xl shadow-lg relative overflow-hidden group"
-                        >
-                            <div className={`absolute top-0 right-0 w-24 h-24 ${item.color} opacity-10 rounded-bl-[100px] -mr-4 -mt-4 transition-transform group-hover:scale-110`}></div>
-                            <div className="text-4xl mb-4 relative z-10">{item.icon}</div>
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
-                            <p className="text-gray-600 dark:text-gray-400 text-sm">{item.desc}</p>
-                        </motion.div>
-                    ))}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div className="mb-10 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-whatsapp-500/10 text-whatsapp-700 dark:text-whatsapp-400 text-xs font-bold uppercase tracking-wider mb-3">
+                    <GraduationCap size={14} />
+                    <span>{t('education.title')}</span>
                 </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slateText-main dark:text-white">
+                    {t('education.subtitle')}
+                </h2>
             </div>
-        </motion.section>
+
+            <div className="grid md:grid-cols-3 gap-6">
+                {t('education.items').map((edu, idx) => (
+                    <div
+                        key={idx}
+                        className="rounded-[28px] bg-white dark:bg-canvas-darkCard border border-[#E9EDEF] dark:border-[#222E35] p-6 shadow-soft flex flex-col justify-between"
+                    >
+                        <div>
+                            <div className="w-12 h-12 rounded-xl overflow-hidden mb-4 border border-gray-100 dark:border-white/10 bg-white p-1">
+                                <img
+                                    src={logos[idx]}
+                                    alt={edu.school}
+                                    className="w-full h-full object-contain"
+                                    onError={(e) => { e.target.style.display = 'none'; }}
+                                />
+                            </div>
+
+                            <span className="text-xs font-bold text-whatsapp-600 dark:text-whatsapp-400">
+                                {edu.period}
+                            </span>
+
+                            <h3 className="font-bold text-base sm:text-lg text-slateText-main dark:text-white mt-1 mb-1">
+                                {edu.degree}
+                            </h3>
+
+                            <div className="text-xs font-semibold text-slateText-muted dark:text-[#8696A0] mb-3">
+                                {edu.school} · {edu.location}
+                            </div>
+
+                            <p className="text-xs sm:text-sm text-slateText-muted dark:text-[#8696A0] leading-relaxed">
+                                {edu.details}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
     );
 };
 
-// Contact
+// Contact & Footer Section
 const Contact = () => {
     const { t } = useLanguage();
 
     return (
-        <footer className="bg-white dark:bg-black py-20 border-t border-gray-200 dark:border-white/10 transition-colors duration-300 relative overflow-hidden">
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-            <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-                <h2 className="text-4xl font-bold mb-8 text-gray-900 dark:text-white">{t('contact.title')}</h2>
-                <p className="text-xl text-gray-600 dark:text-gray-400 mb-12">{t('contact.subtitle')}</p>
+        <footer id="contact" className="pt-16 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            {/* Contact Card */}
+            <div className="rounded-[36px] bg-gradient-to-br from-[#0c3e37] to-[#0f4a42] text-white p-8 sm:p-12 text-center shadow-soft-xl relative overflow-hidden">
+                <div className="max-w-2xl mx-auto space-y-6 relative z-10">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
+                        {t('contact.title')}
+                    </h2>
 
-                <div className="flex justify-center gap-6 mb-16">
-                    <a href="https://github.com/MOMBO-DINGBA" className="p-4 bg-gray-100 dark:bg-white/10 rounded-full hover:bg-gray-200 dark:hover:bg-white/20 transition-colors text-gray-900 dark:text-white">
-                        <Github size={24} />
-                    </a>
-                    <a href="https://linkedin.com" className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-full hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors text-blue-600 dark:text-blue-400">
-                        <Linkedin size={24} />
-                    </a>
-                    <a href="mailto:contact@example.com" className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-full hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors text-purple-600 dark:text-purple-400">
-                        <Mail size={24} />
-                    </a>
+                    <p className="text-base text-white/80">
+                        {t('contact.subtitle')}
+                    </p>
+
+                    <div className="inline-block px-4 py-2 rounded-full bg-white/10 border border-white/15 text-xs sm:text-sm text-whatsapp-300 font-semibold">
+                        {t('contact.status')}
+                    </div>
+
+                    <div className="flex flex-wrap justify-center gap-4 pt-2">
+                        <a
+                            href="https://wa.me/237653867570?text=Bonjour%20Emmanuel,%20j'ai%20consulte%20votre%20portfolio..."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-slateText-main font-bold text-sm shadow-md transition-all hover:scale-105"
+                        >
+                            <MessageCircle size={18} />
+                            <span>WhatsApp : +237 653 867 570</span>
+                        </a>
+
+                        <a
+                            href="mailto:mombodingba.emmanuel@gmail.com"
+                            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/15 hover:bg-white/25 text-white font-semibold text-sm backdrop-blur-md border border-white/20 transition-all"
+                        >
+                            <Mail size={18} />
+                            <span>{t('contact.emailBtn')}</span>
+                        </a>
+                    </div>
+
+                    <div className="flex justify-center gap-4 pt-4">
+                        <a
+                            href="https://github.com/MOMBO-DINGBA"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                            title="GitHub"
+                        >
+                            <Github size={20} />
+                        </a>
+                        <a
+                            href="https://linkedin.com/in/emmanuel-mombo-dingba-56285b234"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                            title="LinkedIn"
+                        >
+                            <Linkedin size={20} />
+                        </a>
+                        <a
+                            href="/cv_mombo.pdf"
+                            download="Emmanuel_Mombo_Dingba_AI_Engineer_CV.pdf"
+                            className="p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                            title="Download CV"
+                        >
+                            <Download size={20} />
+                        </a>
+                    </div>
                 </div>
+            </div>
 
-                <p className="text-gray-500 dark:text-gray-500 font-mono text-sm">{t('contact.footer')}</p>
+            {/* Copyright */}
+            <div className="text-center pt-8 text-xs text-slateText-muted dark:text-[#8696A0]">
+                {t('contact.rights')}
             </div>
         </footer>
     );
 };
 
+// Floating WhatsApp Widget
+const WhatsAppFloatingWidget = () => {
+    return (
+        <a
+            href="https://wa.me/237653867570?text=Bonjour%20Emmanuel,%20j'ai%20vu%20votre%20portfolio%20en%20ligne%20et%20aimerais%20echanger%20avec%20vous."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-sm shadow-xl hover:shadow-2xl transition-all hover:scale-105 active:scale-95 group"
+            title="Discuter directement sur WhatsApp"
+        >
+            <MessageCircle size={20} className="fill-white group-hover:rotate-12 transition-transform" />
+            <span className="hidden sm:inline">Discuter sur WhatsApp</span>
+        </a>
+    );
+};
 
-function App() {
+// Main App Component
+export default function App() {
     return (
         <ThemeProvider>
             <LanguageProvider>
-                <div className="overflow-x-hidden relative">
-                    <Navigation />
-
+                <div className="min-h-screen bg-canvas-light dark:bg-canvas-dark text-slateText-main dark:text-white transition-colors duration-300">
+                    <Navbar />
                     <main>
                         <Hero />
-
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                        >
-                            <CompanyLogos />
-                        </motion.div>
-
-                        <RevealSection id="about">
-                            <About />
-                        </RevealSection>
-
-                        <RevealSection id="projects">
-                            <Projects />
-                        </RevealSection>
-
-                        <RevealSection id="skills">
-                            <Skills />
-                        </RevealSection>
-
-                        <RevealSection id="timeline">
-                            <Timeline />
-                        </RevealSection>
-
-                        <RevealSection id="activities">
-                            <AdditionalActivities />
-                        </RevealSection>
-
+                        <About />
+                        <Experience />
+                        <CvSection />
+                        <Projects />
+                        <Skills />
+                        <Education />
                         <Contact />
                     </main>
+                    <WhatsAppFloatingWidget />
                 </div>
             </LanguageProvider>
         </ThemeProvider>
     );
 }
-
-// Helper component for professional scroll reveal
-const RevealSection = ({ children, id }) => (
-    <motion.section
-        id={id}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-150px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-    >
-        {children}
-    </motion.section>
-);
-
-export default App;

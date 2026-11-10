@@ -4,16 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 dark:bg-[#000000] dark:text-white transition-all duration-700 ease-in-out;
+    @apply bg-canvas-light text-slateText-main dark:bg-canvas-dark dark:text-[#E9EDEF] transition-colors duration-300 antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  /* Smooth scrolling for anchor links */
   html {
     scroll-behavior: smooth;
-  }
-
-  * {
-    @apply transition-colors duration-300;
   }
 }
 
@@ -28,7 +24,7 @@ code {
 }
 
 ::selection {
-  @apply bg-blue-500/30 text-blue-900 dark:text-white;
+  @apply bg-whatsapp-500/25 text-whatsapp-900 dark:text-whatsapp-400;
 }
 
 ::-webkit-scrollbar {
@@ -36,13 +32,13 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-black;
+  @apply bg-[#EFEAE2] dark:bg-[#0B141A];
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-[#1F1F23] rounded-full;
+  @apply bg-[#D1D7DB] dark:bg-[#202C33] rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-[#2F2F33];
+  @apply bg-[#8696A0] dark:bg-[#374248];
 }
